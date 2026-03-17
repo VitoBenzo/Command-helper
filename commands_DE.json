@@ -1,0 +1,964 @@
+[
+  {
+    "id": 1,
+    "cat": "ffmpeg",
+    "name": "Video → Einzelbilder (jpg)",
+    "cmd": "ffmpeg -i /pfad/zum/video.mp4 -vf fps=24 /ordner/frame%04d.jpg",
+    "desc": "Zerlegt ein Video in einzelne Frames mit einer bestimmten Bildrate. Nützlich für ML und Videoanalyse.",
+    "params": [
+      ["-i", "Eingabedatei"],
+      ["-vf fps=24", "Bildrate (24 fps)"],
+      ["%04d", "Dateinummerierung: frame0001.jpg, frame0002.jpg..."]
+    ]
+  },
+  {
+    "id": 2,
+    "cat": "ffmpeg",
+    "name": "in mp4 konvertieren (H.264)",
+    "cmd": "ffmpeg -i input.mov -c:v libx264 -crf 23 -preset medium output.mp4",
+    "desc": "Konvertiert jede Videodatei in mp4 mit H.264-Codec. Optimales Gleichgewicht zwischen Qualität und Größe.",
+    "params": [
+      ["-c:v libx264", "H.264-Videocodec"],
+      ["-crf 23", "Qualität: 18=besser, 28=kleinere Datei (Bereich 18–28)"],
+      ["-preset medium", "Kodiergeschwindigkeit: ultrafast / fast / medium / slow"]
+    ]
+  },
+  {
+    "id": 3,
+    "cat": "ffmpeg",
+    "name": "Video zeitlich zuschneiden",
+    "cmd": "ffmpeg -i input.mp4 -ss 00:00:05 -to 00:00:30 -c copy output.mp4",
+    "desc": "Schneidet ein Videosegment ohne Neukodierung aus — funktioniert sofort.",
+    "params": [
+      ["-ss", "Start des Segments (hh:mm:ss)"],
+      ["-to", "Ende des Segments"],
+      ["-t", "Alternative: Dauer statt Endzeit"],
+      ["-c copy", "Streams ohne Neukodierung kopieren (schnell)"]
+    ]
+  },
+  {
+    "id": 4,
+    "cat": "ffmpeg",
+    "name": "Video → GIF",
+    "cmd": "ffmpeg -i input.mp4 -vf \"fps=15,scale=720:-1:flags=lanczos\" -loop 0 output.gif",
+    "desc": "Konvertiert Video in optimiertes GIF. Lanczos ist der beste Skalierungsalgorithmus.",
+    "params": [
+      ["fps=15", "Bilder pro Sekunde (niedriger = kleinere Datei)"],
+      ["scale=720:-1", "Breite 720px, Höhe automatisch"],
+      ["-loop 0", "Endlosschleife (1 = keine Schleife)"]
+    ]
+  },
+  {
+    "id": 5,
+    "cat": "ffmpeg",
+    "name": "Audio aus Video extrahieren",
+    "cmd": "ffmpeg -i input.mp4 -vn -acodec copy output.aac",
+    "desc": "Extrahiert Audiospur ohne Neukodierung.",
+    "params": [
+      ["-vn", "Video deaktivieren"],
+      ["-acodec copy", "Audio unverändert kopieren (verlustfrei)"],
+      ["-acodec mp3", "Alternative: in mp3 umwandeln"]
+    ]
+  },
+  {
+    "id": 6,
+    "cat": "python",
+    "name": "Lokaler HTTP-Server",
+    "cmd": "cd /pfad/zum/projekt\npython3 -m http.server 8080",
+    "desc": "Startet einen einfachen statischen Server aus dem aktuellen Ordner. Im Browser öffnen: http://localhost:8080",
+    "params": [
+      ["8080", "Port (beliebiger freier Port: 3000, 5000, 8000)"],
+      ["-m http.server", "integriertes Modul, keine Installation erforderlich"]
+    ]
+  },
+  {
+    "id": 7,
+    "cat": "python",
+    "name": "Virtuelle Umgebung",
+    "cmd": "python3 -m venv venv\nsource venv/bin/activate\npip install -r requirements.txt",
+    "desc": "Erstellt eine isolierte Python-Umgebung für das Projekt. Vor der Installation von Paketen erforderlich.",
+    "params": [
+      ["python3 -m venv venv", "venv-Ordner mit Umgebung erstellen"],
+      ["source venv/bin/activate", "aktivieren ((venv) erscheint in der Eingabeaufforderung)"],
+      ["deactivate", "Umgebung verlassen"]
+    ]
+  },
+  {
+    "id": 8,
+    "cat": "git",
+    "name": "Basis-Push",
+    "cmd": "git add .\ngit commit -m \"feat: Beschreibung der Änderungen\"\ngit push origin main",
+    "desc": "Standardzyklus zum Speichern und Veröffentlichen von Änderungen auf GitHub.",
+    "params": [
+      ["git add .", "alle geänderten Dateien zum Staging hinzufügen"],
+      ["-m \"...\"", "Commit-Nachricht"],
+      ["origin main", "entferntes Repository und Branch"]
+    ]
+  },
+  {
+    "id": 9,
+    "cat": "git",
+    "name": "Letzten Commit rückgängig machen",
+    "cmd": "git reset --soft HEAD~1",
+    "desc": "Macht den letzten Commit rückgängig, behält aber Änderungen im Arbeitsverzeichnis.",
+    "params": [
+      ["--soft", "Änderungen im Staging behalten (bereit für Commit)"],
+      ["--hard", "Änderungen VOLLSTÄNDIG LÖSCHEN (Vorsicht!)"],
+      ["HEAD~1", "einen Commit zurück (HEAD~2 — zwei zurück)"]
+    ]
+  },
+  {
+    "id": 10,
+    "cat": "git",
+    "name": "Commit-Verlauf anzeigen",
+    "cmd": "git log --oneline --graph --all",
+    "desc": "Schönes kompaktes Log aller Branches im Terminal.",
+    "params": [
+      ["--oneline", "eine Zeile pro Commit"],
+      ["--graph", "Branch-Baum in ASCII"],
+      ["--all", "alle Branches einschließlich Remote anzeigen"]
+    ]
+  },
+  {
+    "id": 11,
+    "cat": "nginx",
+    "name": "Konfiguration prüfen und neu laden",
+    "cmd": "sudo nginx -t && sudo systemctl reload nginx",
+    "desc": "Prüft zuerst die Konfigurationssyntax und lädt nginx nur bei Erfolg ohne Ausfallzeit neu.",
+    "params": [
+      ["nginx -t", "Syntaxprüfung (test)"],
+      ["&&", "nächstes nur ausführen, wenn vorheriges erfolgreich"],
+      ["reload", "sanftes Neuladen ohne Ausfallzeit"]
+    ]
+  },
+  {
+    "id": 12,
+    "cat": "nginx",
+    "name": "Logs in Echtzeit anzeigen",
+    "cmd": "sudo tail -f /var/log/nginx/error.log\nsudo tail -f /var/log/nginx/access.log",
+    "desc": "Live-Ansicht der nginx-Logs. Ctrl+C zum Stoppen.",
+    "params": [
+      ["-f", "follow — aktualisiert in Echtzeit"],
+      ["error.log", "Serverfehler"],
+      ["access.log", "alle eingehenden Anfragen"]
+    ]
+  },
+  {
+    "id": 13,
+    "cat": "node",
+    "name": "pm2: start / liste / logs",
+    "cmd": "pm2 start ecosystem.config.js\npm2 list\npm2 logs app-name\npm2 restart app-name",
+    "desc": "Grundlegende pm2-Befehle zur Verwaltung von Node.js-Prozessen auf dem Server.",
+    "params": [
+      ["start ecosystem.config.js", "Start mit Konfiguration und Umgebungsvariablen"],
+      ["pm2 list", "Liste aller Prozesse und ihres Status"],
+      ["pm2 logs", "Live-Logs (Ctrl+C zum Beenden)"],
+      ["pm2 restart", "Neustart ohne Stopp"]
+    ]
+  },
+  {
+    "id": 14,
+    "cat": "node",
+    "name": "npm: installieren / aktualisieren",
+    "cmd": "npm install\nnpm install package-name\nnpm update\nnpm audit fix",
+    "desc": "Grundlegende Befehle zur Verwaltung von Abhängigkeiten.",
+    "params": [
+      ["npm install", "alle Abhängigkeiten aus package.json installieren"],
+      ["npm install pkg", "neues Paket hinzufügen"],
+      ["npm update", "alle Pakete auf neueste kompatible Versionen aktualisieren"],
+      ["npm audit fix", "Schwachstellen automatisch beheben"]
+    ]
+  },
+  {
+    "id": 15,
+    "cat": "server",
+    "name": "Freien Arbeitsspeicher anzeigen",
+    "cmd": "free -h && echo \"---\" && cat /proc/swaps",
+    "desc": "Zeigt RAM und Swap. Nützlich zur Diagnose von OOM-Killer-Problemen.",
+    "params": [
+      ["free -h", "Speicher in menschenlesbarem Format (MB/GB)"],
+      ["/proc/swaps", "aktive Swap-Dateien und Partitionen"]
+    ]
+  },
+  {
+    "id": 16,
+    "cat": "server",
+    "name": "2GB Swap-Datei erstellen",
+    "cmd": "sudo fallocate -l 2G /swapfile\nsudo chmod 600 /swapfile\nsudo mkswap /swapfile\nsudo swapon /swapfile",
+    "desc": "Erstellt und aktiviert 2GB Swap. Löst OOM-Killer-Probleme auf VPS mit wenig RAM.",
+    "params": [
+      ["fallocate -l 2G", "2 Gigabyte reservieren (oder 1G, 4G)"],
+      ["chmod 600", "nur Root-Zugriff — zwingend für Swap"],
+      ["mkswap", "als Swap-Space formatieren"],
+      ["swapon", "Swap sofort aktivieren"]
+    ]
+  },
+  {
+    "id": 17,
+    "cat": "server",
+    "name": "Offene Ports prüfen",
+    "cmd": "sudo ss -tlnp\nsudo ufw status",
+    "desc": "Zeigt, welche Ports lauschen und den Firewall-Status.",
+    "params": [
+      ["-t", "nur TCP"],
+      ["-l", "nur lauschende Sockets"],
+      ["-n", "numerische Adressen (kein DNS)"],
+      ["-p", "Prozess auf jedem Port anzeigen"]
+    ]
+  },
+  {
+    "id": 18,
+    "cat": "linux",
+    "name": "Ordner-Größen anzeigen",
+    "cmd": "du -h --max-depth=1",
+    "desc": "Zeigt, wie viel Speicherplatz Ordner im aktuellen Verzeichnis belegen.",
+    "params": [
+      ["-h", "menschenlesbares Format (KB, MB, GB)"],
+      ["--max-depth=1", "nur aktuelle Ordnerebene"],
+      ["du -sh *", "schnelle Liste der Datei- und Ordnergrößen"]
+    ]
+  },
+  {
+    "id": 19,
+    "cat": "linux",
+    "name": "Datei suchen",
+    "cmd": "find /pfad -name \"*.log\"",
+    "desc": "Sucht Dateien nach Namen.",
+    "params": [
+      ["-name", "nach Namen suchen"],
+      ["-iname", "Groß-/Kleinschreibung ignorieren"],
+      ["*.log", "Dateimuster"]
+    ]
+  },
+  {
+    "id": 20,
+    "cat": "linux",
+    "name": "Text in Dateien suchen",
+    "cmd": "grep -r \"Fehler\" /var/log",
+    "desc": "Sucht rekursiv nach Text in Dateien.",
+    "params": [
+      ["-r", "rekursive Suche"],
+      ["-i", "Groß-/Kleinschreibung ignorieren"],
+      ["-n", "Zeilennummer anzeigen"]
+    ]
+  },
+  {
+    "id": 21,
+    "cat": "network",
+    "name": "Verbindung prüfen (ping)",
+    "cmd": "ping -c 4 google.com",
+    "desc": "Prüft Server-Erreichbarkeit.",
+    "params": [
+      ["-c 4", "4 Pakete senden"],
+      ["google.com", "Serveradresse"]
+    ]
+  },
+  {
+    "id": 22,
+    "cat": "network",
+    "name": "HTTP-Anfrage prüfen",
+    "cmd": "curl -I https://example.com",
+    "desc": "Ruft nur HTTP-Antwortheader ab.",
+    "params": [
+      ["-I", "nur Header"],
+      ["-L", "Weiterleitungen folgen"],
+      ["-o datei", "Ausgabe in Datei speichern"]
+    ]
+  },
+  {
+    "id": 23,
+    "cat": "archive",
+    "name": "tar.gz-Archiv erstellen",
+    "cmd": "tar -czvf archiv.tar.gz ordner/",
+    "desc": "Erstellt ein komprimiertes Archiv.",
+    "params": [
+      ["-c", "Archiv erstellen"],
+      ["-z", "gzip-Komprimierung"],
+      ["-v", "Fortschritt anzeigen"],
+      ["-f", "Archivname"]
+    ]
+  },
+  {
+    "id": 24,
+    "cat": "archive",
+    "name": "tar.gz entpacken",
+    "cmd": "tar -xzvf archiv.tar.gz",
+    "desc": "Entpackt tar.gz-Archiv.",
+    "params": [
+      ["-x", "Dateien extrahieren"],
+      ["-z", "gzip"],
+      ["-v", "Dateien anzeigen"],
+      ["-f", "Archiv"]
+    ]
+  },
+  {
+    "id": 25,
+    "cat": "ssh",
+    "name": "Mit Server verbinden",
+    "cmd": "ssh benutzer@server-ip",
+    "desc": "SSH-Verbindung zu einem entfernten Server.",
+    "params": [
+      ["benutzer", "Benutzername"],
+      ["server-ip", "Serveradresse"],
+      ["-p 22", "nicht standardmäßigen Port angeben"]
+    ]
+  },
+  {
+    "id": 26,
+    "cat": "ssh",
+    "name": "Datei auf Server kopieren",
+    "cmd": "scp datei.txt benutzer@server:/home/benutzer/",
+    "desc": "Überträgt Datei per SSH auf Server.",
+    "params": [
+      ["scp", "sichere Kopie"],
+      ["datei.txt", "lokale Datei"],
+      ["benutzer@server", "Server"],
+      ["/home/benutzer/", "Zielordner"]
+    ]
+  },
+  {
+    "id": 27,
+    "cat": "docker",
+    "name": "Container auflisten",
+    "cmd": "docker ps -a",
+    "desc": "Zeigt alle Docker-Container.",
+    "params": [
+      ["ps", "Container auflisten"],
+      ["-a", "einschließlich gestoppter"]
+    ]
+  },
+  {
+    "id": 28,
+    "cat": "docker",
+    "name": "Container ausführen",
+    "cmd": "docker run -d -p 8080:80 nginx",
+    "desc": "Führt nginx-Container aus.",
+    "params": [
+      ["-d", "im Hintergrund ausführen"],
+      ["-p 8080:80", "Portweiterleitung"],
+      ["nginx", "Image"]
+    ]
+  },
+  {
+    "id": 29,
+    "cat": "git",
+    "name": "Neuen Branch erstellen",
+    "cmd": "git checkout -b feature-name",
+    "desc": "Erstellt einen neuen Branch und wechselt zu ihm.",
+    "params": [
+      ["checkout -b", "Branch erstellen"],
+      ["feature-name", "Branch-Name"]
+    ]
+  },
+  {
+    "id": 30,
+    "cat": "git",
+    "name": "Repository aktualisieren",
+    "cmd": "git pull origin main",
+    "desc": "Lädt neueste Änderungen aus entferntem Repository herunter.",
+    "params": [
+      ["pull", "Änderungen herunterladen und zusammenführen"],
+      ["origin", "entferntes Repository"],
+      ["main", "Branch"]
+    ]
+  },
+  {
+    "id": 31,
+    "cat": "linux",
+    "name": "Dateien auflisten",
+    "cmd": "ls -lah",
+    "desc": "Zeigt alle Dateien einschließlich versteckter mit Berechtigungen und Größe.",
+    "params": [
+      ["-l", "detaillierte Liste"],
+      ["-a", "versteckte Dateien einschließen"],
+      ["-h", "Größe in KB/MB/GB"]
+    ]
+  },
+  {
+    "id": 32,
+    "cat": "linux",
+    "name": "Ordner erstellen",
+    "cmd": "mkdir -p projekt/src",
+    "desc": "Erstellt Ordner einschließlich übergeordneter Verzeichnisse.",
+    "params": [
+      ["mkdir", "Verzeichnis erstellen"],
+      ["-p", "verschachtelte Ordner erstellen"]
+    ]
+  },
+  {
+    "id": 33,
+    "cat": "linux",
+    "name": "Datei löschen",
+    "cmd": "rm datei.txt",
+    "desc": "Löscht eine Datei.",
+    "params": [
+      ["rm", "Datei löschen"],
+      ["-r", "Ordner rekursiv löschen"],
+      ["-f", "ohne Bestätigung erzwingen"]
+    ]
+  },
+  {
+    "id": 34,
+    "cat": "linux",
+    "name": "Datei kopieren",
+    "cmd": "cp datei.txt backup/datei.txt",
+    "desc": "Kopiert Datei in einen anderen Ordner.",
+    "params": [
+      ["cp", "kopieren"],
+      ["-r", "Ordner kopieren"]
+    ]
+  },
+  {
+    "id": 35,
+    "cat": "linux",
+    "name": "Datei verschieben",
+    "cmd": "mv datei.txt archiv/datei.txt",
+    "desc": "Verschiebt oder benennt eine Datei um.",
+    "params": [
+      ["mv", "verschieben"],
+      ["mv alt neu", "Datei umbenennen"]
+    ]
+  },
+  {
+    "id": 36,
+    "cat": "process",
+    "name": "Prozesse auflisten",
+    "cmd": "ps aux",
+    "desc": "Zeigt alle laufenden Prozesse.",
+    "params": [
+      ["ps", "Prozessstatus"],
+      ["aux", "alle Benutzer und Prozesse"]
+    ]
+  },
+  {
+    "id": 37,
+    "cat": "process",
+    "name": "Prozessüberwachung",
+    "cmd": "top",
+    "desc": "Interaktive Überwachung von Prozessen und CPU-Auslastung.",
+    "params": [
+      ["top", "Live-Überwachung"],
+      ["htop", "verbesserte Version (falls installiert)"]
+    ]
+  },
+  {
+    "id": 38,
+    "cat": "process",
+    "name": "Prozess beenden",
+    "cmd": "kill -9 1234",
+    "desc": "Beendet einen Prozess gewaltsam.",
+    "params": [
+      ["kill", "Prozess beenden"],
+      ["-9", "SIGKILL — gewaltsames Beenden"],
+      ["1234", "Prozess-PID"]
+    ]
+  },
+  {
+    "id": 39,
+    "cat": "network",
+    "name": "IP-Adresse anzeigen",
+    "cmd": "ip a",
+    "desc": "Zeigt Netzwerkschnittstellen und IP-Adressen.",
+    "params": [
+      ["ip", "Netzwerkdienstprogramm"],
+      ["a", "Adresse"]
+    ]
+  },
+  {
+    "id": 40,
+    "cat": "network",
+    "name": "DNS prüfen",
+    "cmd": "nslookup google.com",
+    "desc": "Zeigt DNS-Einträge einer Domain.",
+    "params": [
+      ["nslookup", "DNS-Abfrage"],
+      ["google.com", "Domain"]
+    ]
+  },
+  {
+    "id": 41,
+    "cat": "network",
+    "name": "Route zum Server",
+    "cmd": "traceroute google.com",
+    "desc": "Zeigt den Paketweg zum Server.",
+    "params": [
+      ["traceroute", "Route prüfen"],
+      ["google.com", "Adresse"]
+    ]
+  },
+  {
+    "id": 42,
+    "cat": "system",
+    "name": "Systeminformationen anzeigen",
+    "cmd": "uname -a",
+    "desc": "Gibt Kernel- und Systeminformationen aus.",
+    "params": [
+      ["uname", "Systemname"],
+      ["-a", "vollständige Informationen"]
+    ]
+  },
+  {
+    "id": 43,
+    "cat": "system",
+    "name": "Festplattennutzung",
+    "cmd": "df -h",
+    "desc": "Zeigt Festplattenplatzverbrauch.",
+    "params": [
+      ["df", "freier Speicherplatz"],
+      ["-h", "menschenlesbar"]
+    ]
+  },
+  {
+    "id": 44,
+    "cat": "docker",
+    "name": "Image herunterladen",
+    "cmd": "docker pull nginx",
+    "desc": "Lädt Docker-Image aus Registry herunter.",
+    "params": [
+      ["pull", "Image herunterladen"],
+      ["nginx", "Image-Name"]
+    ]
+  },
+  {
+    "id": 45,
+    "cat": "docker",
+    "name": "Container stoppen",
+    "cmd": "docker stop container_id",
+    "desc": "Stoppt einen Docker-Container.",
+    "params": [
+      ["stop", "Container stoppen"],
+      ["container_id", "Kennung"]
+    ]
+  },
+  {
+    "id": 46,
+    "cat": "docker",
+    "name": "Container entfernen",
+    "cmd": "docker rm container_id",
+    "desc": "Entfernt einen Container.",
+    "params": [
+      ["rm", "entfernen"],
+      ["container_id", "Container-ID"]
+    ]
+  },
+  {
+    "id": 47,
+    "cat": "python",
+    "name": "Paket installieren",
+    "cmd": "pip install requests",
+    "desc": "Installiert eine Python-Bibliothek.",
+    "params": [
+      ["pip install", "Paket installieren"],
+      ["requests", "Bibliotheksname"]
+    ]
+  },
+  {
+    "id": 48,
+    "cat": "python",
+    "name": "Pakete auflisten",
+    "cmd": "pip list",
+    "desc": "Zeigt installierte Python-Pakete.",
+    "params": [
+      ["pip", "Paketmanager"],
+      ["list", "Pakete auflisten"]
+    ]
+  },
+  {
+    "id": 49,
+    "cat": "python",
+    "name": "Abhängigkeiten einfrieren",
+    "cmd": "pip freeze > requirements.txt",
+    "desc": "Speichert Projektabhängigkeitsliste.",
+    "params": [
+      ["freeze", "Abhängigkeiten exportieren"],
+      [">", "Ausgabeumleitung"]
+    ]
+  },
+  {
+    "id": 50,
+    "cat": "ffmpeg",
+    "name": "Video skalieren",
+    "cmd": "ffmpeg -i input.mp4 -vf scale=1280:720 output.mp4",
+    "desc": "Ändert Videoauflösung.",
+    "params": [
+      ["-vf scale", "Videofilter skala"],
+      ["1280:720", "Auflösung"]
+    ]
+  },
+  {
+    "id": 51,
+    "cat": "ffmpeg",
+    "name": "Ein Einzelbild extrahieren",
+    "cmd": "ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 frame.jpg",
+    "desc": "Speichert ein Einzelbild aus Video.",
+    "params": [
+      ["-ss", "Bildzeit"],
+      ["-vframes 1", "ein Bild"]
+    ]
+  },
+  {
+    "id": 52,
+    "cat": "system",
+    "name": "System neu starten",
+    "cmd": "sudo reboot",
+    "desc": "Startet das System neu.",
+    "params": [
+      ["sudo", "Administratorrechte"],
+      ["reboot", "Neustart"]
+    ]
+  },
+  {
+    "id": 53,
+    "cat": "system",
+    "name": "System herunterfahren",
+    "cmd": "sudo shutdown now",
+    "desc": "Fährt das System sofort herunter.",
+    "params": [
+      ["shutdown", "Herunterfahren"],
+      ["now", "jetzt"]
+    ]
+  },
+  {
+    "id": 54,
+    "cat": "search",
+    "name": "Schnelle Dateisuche",
+    "cmd": "locate dateiname",
+    "desc": "Sehr schnelle Dateisuche mittels Datenbank.",
+    "params": [
+      ["locate", "suchen"],
+      ["updatedb", "Suchdatenbank aktualisieren"]
+    ]
+  },
+  {
+    "id": 55,
+    "cat": "search",
+    "name": "Befehl suchen",
+    "cmd": "apropos schlüsselwort",
+    "desc": "Sucht Befehle nach Schlüsselwort.",
+    "params": [
+      ["apropos", "Man-Seiten durchsuchen"],
+      ["schlüsselwort", "Schlüsselwort"]
+    ]
+  },
+  {
+    "id": 56,
+    "cat": "linux",
+    "name": "Befehlsverlauf anzeigen",
+    "cmd": "history",
+    "desc": "Zeigt Liste zuvor ausgeführter Befehle.",
+    "params": [
+      ["history", "Terminalverlauf"],
+      ["!123", "Befehl aus Verlauf ausführen"]
+    ]
+  },
+  {
+    "id": 57,
+    "cat": "linux",
+    "name": "Terminal löschen",
+    "cmd": "clear",
+    "desc": "Löscht Terminalbildschirm.",
+    "params": [
+      ["clear", "Bildschirm löschen"]
+    ]
+  },
+  {
+    "id": 58,
+    "cat": "system",
+    "name": "Betriebszeit anzeigen",
+    "cmd": "uptime",
+    "desc": "Zeigt, wie lange das System läuft.",
+    "params": [
+      ["uptime", "Systembetriebszeit"]
+    ]
+  },
+  {
+    "id": 59,
+    "cat": "system",
+    "name": "Benutzer anzeigen",
+    "cmd": "who",
+    "desc": "Zeigt, wer gerade im System ist.",
+    "params": [
+      ["who", "aktive Benutzer"]
+    ]
+  },
+  {
+    "id": 60,
+    "cat": "system",
+    "name": "Aktueller Benutzer",
+    "cmd": "whoami",
+    "desc": "Zeigt aktuellen Benutzer.",
+    "params": [
+      ["whoami", "Benutzername"]
+    ]
+  },
+  {
+    "id": 61,
+    "cat": "linux",
+    "name": "Freien Speicherplatz anzeigen",
+    "cmd": "df -h",
+    "desc": "Zeigt Festplattenplatzverbrauch.",
+    "params": [
+      ["df", "freier Speicherplatz"],
+      ["-h", "menschenlesbar"]
+    ]
+  },
+  {
+    "id": 62,
+    "cat": "linux",
+    "name": "Speichernutzung anzeigen",
+    "cmd": "free -h",
+    "desc": "Zeigt RAM-Nutzung.",
+    "params": [
+      ["free", "Speicher"],
+      ["-h", "menschenlesbar"]
+    ]
+  },
+  {
+    "id": 63,
+    "cat": "linux",
+    "name": "Prozesse anzeigen",
+    "cmd": "ps aux",
+    "desc": "Liste aller Prozesse.",
+    "params": [
+      ["ps", "Prozessstatus"],
+      ["aux", "alle Benutzer, Prozesse"]
+    ]
+  },
+  {
+    "id": 64,
+    "cat": "linux",
+    "name": "Prozess beenden",
+    "cmd": "kill -9 1234",
+    "desc": "Prozess gewaltsam beenden.",
+    "params": [
+      ["kill", "beenden"],
+      ["-9", "erzwungenes Beenden"]
+    ]
+  },
+  {
+    "id": 65,
+    "cat": "network",
+    "name": "Port prüfen",
+    "cmd": "nc -zv google.com 80",
+    "desc": "Prüft Port-Erreichbarkeit.",
+    "params": [
+      ["nc", "netcat"],
+      ["-z", "Scan-Modus"]
+    ]
+  },
+  {
+    "id": 66,
+    "cat": "network",
+    "name": "Datei herunterladen",
+    "cmd": "wget https://example.com/datei.zip",
+    "desc": "Lädt Datei aus dem Internet herunter.",
+    "params": [
+      ["wget", "herunterladen"],
+      ["-O datei.zip", "speichern als"]
+    ]
+  },
+  {
+    "id": 67,
+    "cat": "git",
+    "name": "Änderungen rückgängig machen",
+    "cmd": "git checkout -- datei.txt",
+    "desc": "Macht Änderungen in einer Datei rückgängig.",
+    "params": [
+      ["checkout --", "Änderungen rückgängig machen"]
+    ]
+  },
+  {
+    "id": 68,
+    "cat": "git",
+    "name": "Branch löschen",
+    "cmd": "git branch -d feature-name",
+    "desc": "Löscht einen lokalen Branch.",
+    "params": [
+      ["branch -d", "Branch löschen"]
+    ]
+  },
+  {
+    "id": 69,
+    "cat": "docker",
+    "name": "Container-Logs anzeigen",
+    "cmd": "docker logs container_name",
+    "desc": "Zeigt Container-Logs.",
+    "params": [
+      ["logs", "Logs"],
+      ["-f", "folgen"]
+    ]
+  },
+  {
+    "id": 70,
+    "cat": "docker",
+    "name": "Alle Container entfernen",
+    "cmd": "docker rm -f $(docker ps -aq)",
+    "desc": "Entfernt alle Container.",
+    "params": [
+      ["rm -f", "erzwungenes Entfernen"],
+      ["ps -aq", "alle Container"]
+    ]
+  },
+  {
+    "id": 71,
+    "cat": "ssh",
+    "name": "Ordner kopieren",
+    "cmd": "scp -r ordner benutzer@server:/home/benutzer/",
+    "desc": "Kopiert Ordner auf Server.",
+    "params": [
+      ["scp -r", "rekursives Kopieren"]
+    ]
+  },
+  {
+    "id": 72,
+    "cat": "ssh",
+    "name": "Datei auf Server löschen",
+    "cmd": "ssh benutzer@server 'rm /pfad/zur/datei'",
+    "desc": "Löscht Datei auf entferntem Server.",
+    "params": [
+      ["ssh benutzer@server", "verbinden"],
+      ["'...'", "Befehl auf Server"]
+    ]
+  },
+  {
+    "id": 73,
+    "cat": "python",
+    "name": "Skript ausführen",
+    "cmd": "python3 skript.py",
+    "desc": "Führt Python-Skript aus.",
+    "params": [
+      ["python3", "Interpreter"],
+      ["skript.py", "Datei"]
+    ]
+  },
+  {
+    "id": 74,
+    "cat": "python",
+    "name": "Abhängigkeiten installieren",
+    "cmd": "pip install -r requirements.txt",
+    "desc": "Installiert Abhängigkeiten aus Datei.",
+    "params": [
+      ["pip install", "installieren"],
+      ["-r", "Requirements-Datei"]
+    ]
+  },
+  {
+    "id": 75,
+    "cat": "nginx",
+    "name": "nginx neu starten",
+    "cmd": "sudo systemctl restart nginx",
+    "desc": "Startet nginx neu.",
+    "params": [
+      ["systemctl", "Dienstverwaltung"],
+      ["restart", "Neustart"]
+    ]
+  },
+  {
+    "id": 76,
+    "cat": "nginx",
+    "name": "Konfiguration prüfen",
+    "cmd": "sudo nginx -t",
+    "desc": "Prüft nginx-Konfigurationssyntax.",
+    "params": [
+      ["nginx -t", "Konfiguration testen"]
+    ]
+  },
+  {
+    "id": 77,
+    "cat": "node",
+    "name": "Anwendung ausführen",
+    "cmd": "node app.js",
+    "desc": "Führt Node.js-Anwendung aus.",
+    "params": [
+      ["node", "Laufzeitumgebung"],
+      ["app.js", "Einstiegspunkt"]
+    ]
+  },
+  {
+    "id": 78,
+    "cat": "node",
+    "name": "Dev-Abhängigkeiten installieren",
+    "cmd": "npm install --save-dev nodemon",
+    "desc": "Installiert Paket als Entwicklungsabhängigkeit.",
+    "params": [
+      ["--save-dev", "Entwicklungsabhängigkeit"]
+    ]
+  },
+  {
+    "id": 79,
+    "cat": "system",
+    "name": "Festplatten anzeigen",
+    "cmd": "lsblk",
+    "desc": "Zeigt Blockgeräte (Festplatten).",
+    "params": [
+      ["lsblk", "Blockgeräte auflisten"]
+    ]
+  },
+  {
+    "id": 80,
+    "cat": "system",
+    "name": "Prozesse nach Speicher sortieren",
+    "cmd": "ps aux --sort=-%mem",
+    "desc": "Sortiert Prozesse nach Speicher.",
+    "params": [
+      ["--sort=-%mem", "nach Speicher sortieren"]
+    ]
+  },
+  {
+    "id": 81,
+    "cat": "system",
+    "name": "Prozesse nach CPU sortieren",
+    "cmd": "ps aux --sort=-%cpu",
+    "desc": "Sortiert Prozesse nach CPU.",
+    "params": [
+      ["--sort=-%cpu", "nach CPU sortieren"]
+    ]
+  },
+  {
+    "id": 82,
+    "cat": "linux",
+    "name": "Datei erstellen",
+    "cmd": "touch datei.txt",
+    "desc": "Erstellt eine leere Datei.",
+    "params": [
+      ["touch", "Datei erstellen"],
+      ["datei.txt", "Dateiname"]
+    ]
+  },
+  {
+    "id": 83,
+    "cat": "node",
+    "name": "live-server: Datei öffnen",
+    "cmd": "live-server --open=index.html",
+    "desc": "Startet einen Dev-Server mit Live-Reload und öffnet index.html automatisch im Browser. Einmalig installieren: npm install -g live-server",
+    "params": [
+      ["--open=index.html", "bestimmte Datei beim Start öffnen"],
+      ["--port=8080", "eigener Port (Standard: 8080)"],
+      ["--no-browser", "Server ohne Browser-Öffnen starten"]
+    ]
+  },
+  {
+    "id": 84,
+    "cat": "node",
+    "name": "live-server: eigener Port",
+    "cmd": "live-server --port=3000 --host=localhost --open=index.html",
+    "desc": "Startet live-server auf Port 3000. Nützlich wenn 8080 belegt ist. Änderungen in HTML/CSS/JS lösen sofortiges Neuladen aus.",
+    "params": [
+      ["--port=3000", "auf Port 3000 hören"],
+      ["--host=localhost", "nur an localhost binden"],
+      ["--watch=src/", "nur bestimmten Ordner beobachten"]
+    ]
+  },
+  {
+    "id": 85,
+    "cat": "node",
+    "name": "npx serve: statischer Server",
+    "cmd": "npx serve . -p 3000",
+    "desc": "Stellt einen Ordner als statische Website bereit — ohne globale Installation. Schnelle Alternative zu live-server, ohne Live-Reload.",
+    "params": [
+      ["npx serve", "ohne globale Installation ausführen"],
+      [".", "aktuellen Ordner bereitstellen"],
+      ["-p 3000", "Port (Standard: 5000)"]
+    ]
+  }
+]

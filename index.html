@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>dev.notes</title>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Syne:wght@400;700;800&display=swap" rel="stylesheet">
+<style>
+:root {
+  --bg:      #0d0d0f;
+  --bg2:     #13131a;
+  --bg3:     #1a1a24;
+  --border:  rgba(255,255,255,0.07);
+  --border2: rgba(255,255,255,0.13);
+  --text:    #e8e6f0;
+  --muted:   #6b6880;
+  --muted2:  #9592a8;
+  --accent:  #7c6af5;
+  --accent2: #a594ff;
+  --green:   #4ade80;
+  --amber:   #fbbf24;
+  --red:     #f87171;
+  --blue:    #60a5fa;
+  --cyan:    #22d3ee;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body {
+  font-family: 'JetBrains Mono', monospace;
+  background: var(--bg);
+  color: var(--text);
+  min-height: 100vh;
+  overflow-x: hidden;
+}
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background: repeating-linear-gradient(0deg, transparent, transparent 2px, rgba(0,0,0,0.03) 2px, rgba(0,0,0,0.03) 4px);
+  pointer-events: none;
+  z-index: 100;
+}
+
+/* ── Header ── */
+header {
+  position: sticky; top: 0; z-index: 50;
+  background: rgba(13,13,15,0.9);
+  backdrop-filter: blur(16px);
+  border-bottom: 1px solid var(--border);
+  padding: 0 2rem;
+}
+.header-inner {
+  max-width: 900px; margin: 0 auto;
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between; gap: 1rem;
+}
+.logo {
+  font-family: 'Syne', sans-serif;
+  font-size: 15px; font-weight: 800; letter-spacing: 0.08em;
+  display: flex; align-items: center; gap: 8px;
+}
+.logo-dot {
+  width: 7px; height: 7px; border-radius: 50%;
+  background: var(--accent); box-shadow: 0 0 8px var(--accent);
+  animation: pulse 2s ease-in-out infinite;
+}
+@keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.3} }
+
+.search-wrap { position: relative; flex: 1; max-width: 280px; }
+.search-wrap input {
+  width: 100%;
+  background: var(--bg3);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  padding: 6px 28px 6px 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px; color: var(--text); outline: none;
+  transition: border-color 0.2s;
+}
+.search-wrap input::placeholder { color: var(--muted); }
+.search-wrap input:focus { border-color: var(--accent); }
+.search-clear {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 15px; line-height: 1; padding: 2px 4px; transition: color 0.15s;
+  display: none;
+}
+.search-clear:hover { color: var(--text); }
+.search-slash {
+  position: absolute; right: 8px; top: 50%; transform: translateY(-50%);
+  background: var(--bg); border: 1px solid var(--border2);
+  color: var(--muted); font-size: 9px; line-height: 1;
+  padding: 2px 5px; border-radius: 3px; pointer-events: none;
+  transition: opacity 0.15s;
+}
+.search-wrap input:focus ~ .search-slash { opacity: 0; }
+mark.hl {
+  background: rgba(124,106,245,0.25); color: var(--accent2);
+  border-radius: 2px; padding: 0 1px; font-style: normal;
+}
+.search-icon {
+  position: absolute; left: 9px; top: 50%; transform: translateY(-50%);
+  color: var(--muted); pointer-events: none;
+}
+.cmd-count { font-size: 11px; color: var(--muted); white-space: nowrap; }
+
+.lang-switch {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+}
+.lang-btn {
+  padding: 4px 7px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.lang-btn:hover { border-color: var(--border2); color: var(--text); }
+.lang-btn.active { border-color: var(--accent); color: var(--accent2); background: var(--bg3); }
+
+/* ── Main ── */
+main { max-width: 900px; margin: 0 auto; padding: 2.5rem 2rem 5rem; }
+
+/* ── Hero ── */
+.hero { margin-bottom: 2.5rem; animation: fadeup 0.5s ease both; }
+@keyframes fadeup { from{opacity:0;transform:translateY(14px)} to{opacity:1;transform:translateY(0)} }
+.hero-label {
+  font-size: 11px; color: var(--accent2);
+  letter-spacing: 0.15em; text-transform: uppercase; margin-bottom: 8px;
+}
+.hero h1 {
+  font-family: 'Syne', sans-serif;
+  font-size: clamp(26px, 5vw, 40px); font-weight: 800; line-height: 1.1;
+  margin-bottom: 10px;
+}
+.hero h1 span { color: var(--accent2); }
+.hero p { font-size: 12px; color: var(--muted2); line-height: 1.7; max-width: 460px; }
+
+/* ── Filters ── */
+.filters {
+  display: flex; gap: 6px; flex-wrap: wrap;
+  margin-bottom: 2rem;
+  animation: fadeup 0.5s 0.08s ease both;
+}
+.filter-btn {
+  padding: 5px 12px;
+  border-radius: 4px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--muted2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px; cursor: pointer;
+  transition: all 0.15s;
+  display: flex; align-items: center; gap: 5px;
+}
+.filter-btn:hover { border-color: var(--border2); color: var(--text); }
+.filter-btn.active { background: var(--bg3); border-color: var(--accent); color: var(--accent2); }
+.filter-dot { width: 6px; height: 6px; border-radius: 50%; flex-shrink: 0; }
+
+/* ── Section title ── */
+.section-title {
+  font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+  color: var(--muted);
+  margin: 2.2rem 0 10px;
+  padding-left: 8px;
+  border-left: 2px solid var(--accent);
+}
+
+/* ── Command card ── */
+.cmd-card {
+  background: var(--bg2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  margin-bottom: 7px;
+  transition: border-color 0.2s;
+  animation: fadeup 0.4s ease both;
+  overflow: hidden;
+}
+.cmd-card:hover { border-color: var(--border2); }
+.cmd-card.open  { border-color: rgba(124,106,245,0.4); }
+
+.cmd-header {
+  display: flex; align-items: center;
+  padding: 12px 16px; gap: 11px;
+  cursor: pointer; user-select: none;
+}
+.cmd-cat-pill {
+  font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase;
+  padding: 2px 7px; border-radius: 3px; font-weight: 500; white-space: nowrap; flex-shrink: 0;
+}
+.cmd-title { font-size: 13px; font-weight: 500; color: var(--text); flex: 1; }
+.cmd-short {
+  font-size: 11px; color: var(--muted);
+  white-space: nowrap; overflow: hidden; text-overflow: ellipsis; max-width: 180px;
+}
+.cmd-chevron { color: var(--muted); font-size: 10px; transition: transform 0.2s; flex-shrink: 0; }
+.cmd-card.open .cmd-chevron { transform: rotate(90deg); }
+
+.cmd-body { display: none; padding: 14px 16px 16px; border-top: 1px solid var(--border); }
+.cmd-card.open .cmd-body { display: block; }
+
+.cmd-desc {
+  font-size: 12px; color: var(--muted2); line-height: 1.7;
+  margin-bottom: 12px;
+  font-family: 'Syne', sans-serif;
+}
+.code-block {
+  background: var(--bg); border: 1px solid var(--border);
+  border-radius: 6px; padding: 11px 14px;
+  position: relative; margin-bottom: 8px;
+}
+.code-block pre {
+  font-size: 12px; line-height: 1.75; color: var(--text);
+  white-space: pre-wrap; word-break: break-all;
+  padding-right: 48px;
+}
+.c-cmd  { color: var(--accent2); }
+.c-flag { color: var(--cyan); }
+.c-path { color: var(--amber); }
+.c-sep  { color: var(--muted); }
+
+.copy-btn {
+  position: absolute; top: 8px; right: 8px;
+  background: var(--bg3); border: 1px solid var(--border2);
+  color: var(--muted2);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; padding: 3px 8px; border-radius: 4px;
+  cursor: pointer; transition: all 0.15s;
+}
+.copy-btn:hover { color: var(--text); border-color: var(--accent); }
+.copy-btn.ok { color: var(--green); border-color: var(--green); }
+
+.cmd-params { display: flex; flex-direction: column; gap: 3px; margin-top: 10px; }
+.param-row { display: flex; gap: 10px; font-size: 11px; line-height: 1.6; }
+.param-key { color: var(--cyan); min-width: 100px; flex-shrink: 0; }
+.param-val { color: var(--muted2); font-family: 'Syne', sans-serif; }
+
+.delete-btn {
+  display: block; margin-top: 10px; margin-left: auto;
+  background: none; border: none;
+  color: var(--muted); font-family: 'JetBrains Mono', monospace;
+  font-size: 10px; cursor: pointer; letter-spacing: 0.05em;
+  transition: color 0.15s;
+}
+.delete-btn:hover { color: var(--red); }
+
+/* ── Add form ── */
+.add-section {
+  margin-top: 3rem;
+  border: 1px dashed var(--border2);
+  border-radius: 8px; padding: 1.5rem;
+  animation: fadeup 0.5s 0.2s ease both;
+}
+.add-label {
+  font-size: 11px; color: var(--accent2);
+  letter-spacing: 0.1em; text-transform: uppercase; margin-bottom: 1rem;
+}
+.add-grid {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 10px; margin-bottom: 10px;
+}
+@media (max-width: 580px) { .add-grid { grid-template-columns: 1fr; } }
+.field label {
+  display: block; font-size: 10px; color: var(--muted);
+  margin-bottom: 4px; text-transform: uppercase; letter-spacing: 0.1em;
+}
+.field input, .field select, .field textarea {
+  width: 100%; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 5px;
+  padding: 7px 10px;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px; color: var(--text);
+  outline: none; transition: border-color 0.2s;
+}
+.field input:focus, .field select:focus, .field textarea:focus { border-color: var(--accent); }
+.field select option { background: var(--bg2); }
+.field textarea { height: 68px; resize: vertical; }
+.field { margin-bottom: 10px; }
+.add-btn {
+  background: var(--accent); border: none; color: #fff;
+  font-family: 'JetBrains Mono', monospace; font-size: 12px;
+  padding: 8px 20px; border-radius: 5px; cursor: pointer;
+  transition: opacity 0.15s, transform 0.1s; letter-spacing: 0.05em;
+}
+.add-btn:hover { opacity: 0.85; }
+.add-btn:active { transform: scale(0.98); }
+
+/* ── Tag colors ── */
+.tag-ffmpeg { background: rgba(248,113,113,0.12); color: #f87171; }
+.tag-python { background: rgba(96,165,250,0.12);  color: #60a5fa; }
+.tag-git    { background: rgba(74,222,128,0.12);  color: #4ade80; }
+.tag-nginx  { background: rgba(251,191,36,0.12);  color: #fbbf24; }
+.tag-node   { background: rgba(34,211,238,0.12);  color: #22d3ee; }
+.tag-server { background: rgba(124,106,245,0.12); color: #a594ff; }
+.tag-other  { background: rgba(148,163,184,0.12); color: #94a3b8; }
+
+/* ── Error / loading ── */
+.state-msg { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 12px; }
+.empty     { text-align: center; padding: 3rem 1rem; color: var(--muted); font-size: 12px; }
+</style>
+</head>
+<body>
+
+<header>
+  <div class="header-inner">
+    <div class="logo">
+      <div class="logo-dot"></div>
+      dev.notes
+    </div>
+    <div class="search-wrap">
+      <svg class="search-icon" width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/>
+      </svg>
+      <input type="text" id="search" placeholder="поиск команды..." autocomplete="off" oninput="filterAll()" title="/ — фокус, Esc — сбросить">
+      <button class="search-clear" id="search-clear" onclick="clearSearch()" title="сбросить (Esc)">×</button>
+      <span class="search-slash" id="search-slash">/</span>
+    </div>
+    <div class="cmd-count" id="cmd-count"></div>
+    <div class="lang-switch" id="lang-switch">
+      <button class="lang-btn" data-lang="ru" onclick="setLang('ru', this)">RU</button>
+      <button class="lang-btn" data-lang="en" onclick="setLang('en', this)">EN</button>
+      <button class="lang-btn" data-lang="de" onclick="setLang('de', this)">DE</button>
+    </div>
+  </div>
+</header>
+
+<main>
+  <div class="hero">
+    <div class="hero-label" id="hero-label">// personal reference</div>
+    <h1 id="hero-title">commands &amp; <span>utilities</span></h1>
+    <p id="hero-desc">Personal command reference. All data lives in <code style="color:var(--accent2)">commands.json</code> - add new entries there.</p>
+  </div>
+
+  <div class="filters" id="filters"></div>
+  <div id="cmd-list"><div class="state-msg">// loading...</div></div>
+
+  <div class="add-section">
+    <div class="add-label" id="add-label">+ add command (local)</div>
+    <div class="add-grid">
+      <div class="field">
+        <label id="label-name">name</label>
+        <input type="text" id="a-name" placeholder="ffmpeg: video to gif">
+      </div>
+      <div class="field">
+        <label id="label-cat">category</label>
+        <select id="a-cat" style="background:var(--bg)">
+          <!-- заполняется динамически -->
+        </select>
+      </div>
+    </div>
+    <div class="field">
+      <label id="label-cmd">command</label>
+      <textarea id="a-cmd" placeholder="ffmpeg -i input.mp4 output.gif"></textarea>
+    </div>
+    <div class="field">
+      <label id="label-desc">description</label>
+      <input type="text" id="a-desc" placeholder="Short description of what the command does">
+    </div>
+    <button class="add-btn" id="add-btn" onclick="addCommand()">save -></button>
+    <p id="add-hint" style="margin-top:10px;font-size:10px;color:var(--muted);line-height:1.6">
+      * Added commands are stored in browser localStorage.<br>
+      For permanent storage, add entries to <code style="color:var(--accent2)">commands.json</code>.
+    </p>
+  </div>
+</main>
+
+<script>
+const CAT_ORDER = ['ffmpeg','python','git','nginx','node','server','other'];
+const CAT_COLORS = {
+  ffmpeg:'#f87171', python:'#60a5fa', git:'#4ade80',
+  nginx:'#fbbf24', node:'#22d3ee', server:'#a594ff', other:'#94a3b8'
+};
+const LOCAL_KEY = 'dev_notes_local_v1';
+const LANG_KEY = 'dev_notes_lang_v1';
+const COMMAND_FILES = {
+  ru: 'commands_RU.json',
+  en: 'commands_EN.json',
+  de: 'commands_DE.json'
+};
+
+const I18N = {
+  ru: {
+    all: 'все',
+    heroLabel: '// личный справочник',
+    heroTitleHtml: 'команды &amp; <span>утилиты</span>',
+    heroDescHtml: 'Личный справочник рабочих команд. Все данные хранятся в <code style="color:var(--accent2)">{file}</code> - просто добавляй туда новые записи.',
+    searchPlaceholder: 'поиск команды...',
+    loading: '// загрузка...',
+    loadError: '// не удалось загрузить commands.json',
+    loadHelp: 'Убедись, что файл лежит рядом с index.html и страница открыта через сервер (не file://).',
+    empty: '// ничего не найдено',
+    commandsWord: 'команд',
+    addLabel: '+ добавить команду (локально)',
+    labelName: 'название',
+    labelCat: 'категория',
+    labelCmd: 'команда',
+    labelDesc: 'описание',
+    namePlaceholder: 'ffmpeg: видео в gif',
+    cmdPlaceholder: 'ffmpeg -i input.mp4 output.gif',
+    descPlaceholder: 'Краткое описание что делает команда',
+    save: 'сохранить ->',
+    addHintHtml: '* Добавленные команды хранятся в localStorage браузера.<br>Для постоянного хранения добавь запись в <code style="color:var(--accent2)">{file}</code>.',
+    copy: 'copy',
+    copied: 'ok ✓',
+    copyError: 'ошибка',
+    delete: 'удалить x',
+    requiredAlert: 'Заполни название и команду'
+  },
+  en: {
+    all: 'all',
+    heroLabel: '// personal reference',
+    heroTitleHtml: 'commands &amp; <span>utilities</span>',
+    heroDescHtml: 'Personal command reference. All data lives in <code style="color:var(--accent2)">{file}</code> - add new entries there.',
+    searchPlaceholder: 'search command...',
+    loading: '// loading...',
+    loadError: '// failed to load commands.json',
+    loadHelp: 'Make sure the file is next to index.html and the page is opened via server (not file://).',
+    empty: '// nothing found',
+    commandsWord: 'commands',
+    addLabel: '+ add command (local)',
+    labelName: 'name',
+    labelCat: 'category',
+    labelCmd: 'command',
+    labelDesc: 'description',
+    namePlaceholder: 'ffmpeg: video to gif',
+    cmdPlaceholder: 'ffmpeg -i input.mp4 output.gif',
+    descPlaceholder: 'Short description of what the command does',
+    save: 'save ->',
+    addHintHtml: '* Added commands are stored in browser localStorage.<br>For permanent storage, add entries to <code style="color:var(--accent2)">{file}</code>.',
+    copy: 'copy',
+    copied: 'ok ✓',
+    copyError: 'error',
+    delete: 'delete x',
+    requiredAlert: 'Fill in name and command'
+  },
+  de: {
+    all: 'alle',
+    heroLabel: '// persoenliche referenz',
+    heroTitleHtml: 'befehle &amp; <span>tools</span>',
+    heroDescHtml: 'Persoenliche Befehlsreferenz. Alle Daten liegen in <code style="color:var(--accent2)">{file}</code> - neue Eintraege dort hinzufuegen.',
+    searchPlaceholder: 'befehl suchen...',
+    loading: '// wird geladen...',
+    loadError: '// commands.json konnte nicht geladen werden',
+    loadHelp: 'Stelle sicher, dass die Datei neben index.html liegt und die Seite ueber einen Server geoeffnet wurde (nicht file://).',
+    empty: '// nichts gefunden',
+    commandsWord: 'befehle',
+    addLabel: '+ befehl hinzufuegen (lokal)',
+    labelName: 'name',
+    labelCat: 'kategorie',
+    labelCmd: 'befehl',
+    labelDesc: 'beschreibung',
+    namePlaceholder: 'ffmpeg: video zu gif',
+    cmdPlaceholder: 'ffmpeg -i input.mp4 output.gif',
+    descPlaceholder: 'Kurze Beschreibung des Befehls',
+    save: 'speichern ->',
+    addHintHtml: '* Hinzugefuegte Befehle werden in localStorage gespeichert.<br>Fuer dauerhafte Speicherung Eintraege in <code style="color:var(--accent2)">{file}</code> eintragen.',
+    copy: 'kopieren',
+    copied: 'ok ✓',
+    copyError: 'fehler',
+    delete: 'loeschen x',
+    requiredAlert: 'Name und Befehl ausfuellen'
+  }
+};
+
+let baseCommands = [];   // из commands.json
+let localCommands = [];  // из localStorage
+let activeCat = 'all';
+let nextLocalId = 9000;
+let currentLang = 'ru';
+
+function t(key) {
+  return (I18N[currentLang] && I18N[currentLang][key]) || I18N.en[key] || key;
+}
+
+function dataFileForLang(lang = currentLang) {
+  return COMMAND_FILES[lang] || COMMAND_FILES.en;
+}
+
+function withDataFile(text) {
+  return String(text || '').replaceAll('{file}', dataFileForLang());
+}
+
+function applyLanguage() {
+  document.documentElement.lang = currentLang;
+  document.getElementById('hero-label').textContent = t('heroLabel');
+  document.getElementById('hero-title').innerHTML = t('heroTitleHtml');
+  document.getElementById('hero-desc').innerHTML = withDataFile(t('heroDescHtml'));
+  document.getElementById('search').placeholder = t('searchPlaceholder');
+
+  document.getElementById('add-label').textContent = t('addLabel');
+  document.getElementById('label-name').textContent = t('labelName');
+  document.getElementById('label-cat').textContent = t('labelCat');
+  document.getElementById('label-cmd').textContent = t('labelCmd');
+  document.getElementById('label-desc').textContent = t('labelDesc');
+  document.getElementById('a-name').placeholder = t('namePlaceholder');
+  document.getElementById('a-cmd').placeholder = t('cmdPlaceholder');
+  document.getElementById('a-desc').placeholder = t('descPlaceholder');
+  document.getElementById('add-btn').textContent = t('save');
+  document.getElementById('add-hint').innerHTML = withDataFile(t('addHintHtml'));
+
+  document.querySelectorAll('.lang-btn').forEach(btn => {
+    btn.classList.toggle('active', btn.dataset.lang === currentLang);
+  });
+}
+
+async function loadBaseCommands() {
+  const file = dataFileForLang();
+  const prev = baseCommands;
+
+  document.getElementById('cmd-list').innerHTML = `<div class="state-msg">${t('loading')}</div>`;
+
+  try {
+    const res = await fetch(file);
+    if (!res.ok) throw new Error(res.status);
+    const loaded = await res.json();
+    baseCommands = loaded;
+    return true;
+  } catch (e) {
+    baseCommands = prev;
+    document.getElementById('cmd-list').innerHTML =
+      `<div class="state-msg">${t('loadError')}<br><span style="color:var(--red)">${e.message}</span><br><br>${t('loadHelp')}<br><br><span style="color:var(--muted)">${file}</span></div>`;
+    return false;
+  }
+}
+
+async function setLang(lang) {
+  if (!I18N[lang]) return;
+  currentLang = lang;
+  localStorage.setItem(LANG_KEY, lang);
+  applyLanguage();
+
+  const ok = await loadBaseCommands();
+  if (!ok) return;
+
+  buildFilters();
+  buildCatSelect();
+  filterAll();
+}
+
+function getCategoryOrder(commands) {
+  const used = [...new Set(commands.map(c => c.cat).filter(Boolean))];
+  const known = CAT_ORDER.filter(c => used.includes(c));
+  const extra = used.filter(c => !CAT_ORDER.includes(c)).sort();
+  return [...known, ...extra];
+}
+
+/* ── Загрузка ── */
+async function init() {
+  const savedLang = localStorage.getItem(LANG_KEY);
+  if (savedLang && I18N[savedLang]) currentLang = savedLang;
+  applyLanguage();
+
+  // Загружаем локальные
+  try {
+    const saved = localStorage.getItem(LOCAL_KEY);
+    if (saved) localCommands = JSON.parse(saved);
+  } catch(e) { localCommands = []; }
+
+  // Загружаем команды для текущего языка.
+  const ok = await loadBaseCommands();
+  if (!ok) return;
+
+  // Гарантируем полный список при первом рендере.
+  activeCat = 'all';
+  document.getElementById('search').value = '';
+
+  buildFilters();
+  buildCatSelect();
+  filterAll();
+}
+
+function allCommands() {
+  return [...baseCommands, ...localCommands];
+}
+
+/* ── Фильтры ── */
+function buildFilters() {
+  const cats = ['all', ...getCategoryOrder(allCommands())];
+  const el = document.getElementById('filters');
+  el.innerHTML = cats.map(c => `
+    <button class="filter-btn${c === activeCat ? ' active' : ''}" data-cat="${c}" onclick="setFilter('${c}',this)">
+      <span class="filter-dot" style="background:${CAT_COLORS[c]||'#94a3b8'}"></span>
+      ${c === 'all' ? t('all') : c}
+    </button>`).join('');
+}
+
+function buildCatSelect() {
+  const sel = document.getElementById('a-cat');
+  const usedCats = [...new Set(allCommands().map(c => c.cat))].sort();
+  const all = [...new Set([...CAT_ORDER, ...usedCats])];
+  sel.innerHTML = all.map(c => `<option value="${c}">${c}</option>`).join('');
+}
+
+function setFilter(cat, btn) {
+  activeCat = cat;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.toggle('active', b.dataset.cat === cat));
+  filterAll();
+}
+
+/* ── Рендер ── */
+function filterAll() {
+  const q = document.getElementById('search').value.toLowerCase().trim();
+  const clearBtn = document.getElementById('search-clear');
+  const slashHint = document.getElementById('search-slash');
+  if (clearBtn) clearBtn.style.display = q ? '' : 'none';
+  if (slashHint) slashHint.style.display = q ? 'none' : '';
+  const list = allCommands().filter(c => {
+    const matchCat = activeCat === 'all' || c.cat === activeCat;
+    const matchQ = !q ||
+      c.name.toLowerCase().includes(q) ||
+      c.cmd.toLowerCase().includes(q) ||
+      (c.desc||'').toLowerCase().includes(q);
+    return matchCat && matchQ;
+  });
+
+  const total = allCommands().length;
+  document.getElementById('cmd-count').textContent = `${list.length}/${total} ${t('commandsWord')}`;
+
+  if (!list.length) {
+    document.getElementById('cmd-list').innerHTML = `<div class="empty">${t('empty')}</div>`;
+    return;
+  }
+
+  // Группировка по категориям
+  const catOrder = getCategoryOrder(list);
+  const groups = {};
+  catOrder.forEach(c => groups[c] = []);
+  list.forEach(c => {
+    if (!groups[c.cat]) groups[c.cat] = [];
+    groups[c.cat].push(c);
+  });
+
+  let html = '';
+  let delay = 0;
+  for (const cat of catOrder) {
+    const items = groups[cat];
+    if (!items || !items.length) continue;
+    if (activeCat === 'all') html += `<div class="section-title">${cat}</div>`;
+    items.forEach(c => {
+      html += renderCard(c, delay, q);
+      delay = Math.min(delay + 35, 280);
+    });
+  }
+
+  document.getElementById('cmd-list').innerHTML = html;
+}
+
+function renderCard(c, delay, q = '') {
+  const shortCmd = c.cmd.split('\n')[0];
+  const short = shortCmd.length > 42 ? shortCmd.substring(0, 42) + '…' : shortCmd;
+  const isLocal = c.id >= 9000;
+  const catClass = CAT_COLORS[c.cat] ? `tag-${c.cat}` : 'tag-other';
+
+  const paramsHtml = (c.params||[]).map(([k,v]) =>
+    `<div class="param-row">
+      <span class="param-key">${esc(k)}</span>
+      <span class="param-val">${esc(v)}</span>
+    </div>`).join('');
+
+  return `
+  <div class="cmd-card" id="card-${c.id}" style="animation-delay:${delay}ms" onclick="toggleCard(${c.id})">
+    <div class="cmd-header">
+      <span class="cmd-cat-pill ${catClass}">${c.cat}</span>
+      <span class="cmd-title">${hlText(c.name, q)}</span>
+      <span class="cmd-short">${hlText(short, q)}</span>
+      <span class="cmd-chevron">▶</span>
+    </div>
+    <div class="cmd-body">
+      ${c.desc ? `<div class="cmd-desc">${hlText(c.desc, q)}</div>` : ''}
+      <div class="code-block">
+        <pre>${highlight(c.cmd)}</pre>
+        <button class="copy-btn" onclick="event.stopPropagation();copyCmd(${c.id},this)">${t('copy')}</button>
+      </div>
+      ${paramsHtml ? `<div class="cmd-params">${paramsHtml}</div>` : ''}
+      ${isLocal ? `<button class="delete-btn" onclick="event.stopPropagation();deleteLocal(${c.id})">${t('delete')}</button>` : ''}
+    </div>
+  </div>`;
+}
+
+/* ── Highlight ── */
+function highlight(cmd) {
+  // Порядок важен: сначала подсветка «сырого» текста, чтобы не ломать HTML-теги.
+  return esc(cmd)
+    .replace(/(&amp;&amp;|\|)/g, '<span class="c-sep"> $1 </span>')
+    .replace(/(\/[\w./%-]+)/g, '<span class="c-path">$1</span>')
+    .replace(/(\s-{1,2}[\w:=.]+)/g, '<span class="c-flag">$1</span>')
+    .replace(/\b(ffmpeg|python3|python|git|sudo|nginx|pm2|source|pip|pip3|free|cat|cd|fallocate|chmod|mkswap|swapon|npm|node|tail|ss|ufw|curl|wget|tar|scp|ssh|docker|find|grep|du|ls|mkdir|rm|cp|mv|ps|top|kill|ip|nslookup|traceroute|uname|df|uptime|who|whoami|locate|apropos|history|clear|nc|systemctl|http\.server)\b/g,
+      '<span class="c-cmd">$1</span>');
+}
+
+function esc(s) {
+  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+function hlText(text, q) {
+  const escaped = esc(text);
+  if (!q) return escaped;
+  try {
+    const re = new RegExp('(' + q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + ')', 'gi');
+    return escaped.replace(re, '<mark class="hl">$1</mark>');
+  } catch(e) { return escaped; }
+}
+
+/* ── Действия ── */
+function toggleCard(id) {
+  document.getElementById('card-' + id)?.classList.toggle('open');
+}
+
+async function copyCmd(id, btn) {
+  const c = allCommands().find(x => x.id === id);
+  if (!c) return;
+
+  try {
+    await navigator.clipboard.writeText(c.cmd);
+    flash(btn);
+    return;
+  } catch (_) {
+    // Fallback для file:// и браузеров без Clipboard API.
+  }
+
+  const ta = document.createElement('textarea');
+  ta.value = c.cmd;
+  ta.setAttribute('readonly', '');
+  ta.style.position = 'fixed';
+  ta.style.top = '-9999px';
+  ta.style.left = '-9999px';
+  document.body.appendChild(ta);
+
+  ta.focus();
+  ta.select();
+  ta.setSelectionRange(0, ta.value.length);
+
+  const ok = document.execCommand('copy');
+  ta.remove();
+
+  if (ok) {
+    flash(btn);
+  } else {
+    btn.textContent = t('copyError');
+    setTimeout(() => { btn.textContent = t('copy'); }, 1500);
+  }
+}
+
+function flash(btn) {
+  btn.textContent = t('copied'); btn.classList.add('ok');
+  setTimeout(() => { btn.textContent = t('copy'); btn.classList.remove('ok'); }, 1500);
+}
+
+function addCommand() {
+  const name = document.getElementById('a-name').value.trim();
+  const cmd  = document.getElementById('a-cmd').value.trim();
+  const cat  = document.getElementById('a-cat').value;
+  const desc = document.getElementById('a-desc').value.trim();
+  if (!name || !cmd) { alert(t('requiredAlert')); return; }
+
+  localCommands.push({ id: nextLocalId++, cat, name, cmd, desc, params: [] });
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(localCommands));
+
+  ['a-name','a-cmd','a-desc'].forEach(id => document.getElementById(id).value = '');
+  buildFilters(); buildCatSelect();
+  activeCat = 'all';
+  filterAll();
+}
+
+function deleteLocal(id) {
+  localCommands = localCommands.filter(c => c.id !== id);
+  localStorage.setItem(LOCAL_KEY, JSON.stringify(localCommands));
+  buildFilters(); filterAll();
+}
+
+function clearSearch() {
+  const inp = document.getElementById('search');
+  inp.value = '';
+  filterAll();
+}
+
+document.addEventListener('keydown', e => {
+  const inp = document.getElementById('search');
+  const tag = document.activeElement.tagName;
+  if (e.key === '/' && document.activeElement !== inp && tag !== 'INPUT' && tag !== 'TEXTAREA' && tag !== 'SELECT') {
+    e.preventDefault();
+    inp.focus();
+    inp.select();
+  }
+  if (e.key === 'Escape' && document.activeElement === inp) {
+    clearSearch();
+    inp.blur();
+  }
+});
+
+init();
+</script>
+</body>
+</html>
