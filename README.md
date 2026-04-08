@@ -6,6 +6,18 @@
 
 Fast, multilingual command cheat sheet in a single static page.
 
+## Preview
+
+![App preview](docs/preview.svg)
+
+## Roadmap
+
+- [ ] Add command edit mode for local entries
+- [ ] Import/export custom commands as JSON
+- [ ] Keyboard navigation for command cards
+- [ ] Optional compact card layout for small screens
+- [ ] Category analytics (count and quick stats)
+
 ## Languages
 
 - [English](#english)
