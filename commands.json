@@ -1,0 +1,436 @@
+[
+  {
+    "name": "ls",
+    "description": "List directory contents.",
+    "examples": [
+      "ls",
+      "ls -la",
+      "ls -lh /var/log"
+    ]
+  },
+  {
+    "name": "cd",
+    "description": "Change the current working directory.",
+    "examples": [
+      "cd /home/user",
+      "cd ..",
+      "cd ~"
+    ]
+  },
+  {
+    "name": "pwd",
+    "description": "Print the full path of the current working directory.",
+    "examples": [
+      "pwd"
+    ]
+  },
+  {
+    "name": "mkdir",
+    "description": "Create one or more directories.",
+    "examples": [
+      "mkdir my_folder",
+      "mkdir -p a/b/c"
+    ]
+  },
+  {
+    "name": "rm",
+    "description": "Remove files or directories.",
+    "examples": [
+      "rm file.txt",
+      "rm -r my_folder",
+      "rm -rf /tmp/cache"
+    ]
+  },
+  {
+    "name": "cp",
+    "description": "Copy files or directories.",
+    "examples": [
+      "cp file.txt backup.txt",
+      "cp -r src/ dest/"
+    ]
+  },
+  {
+    "name": "mv",
+    "description": "Move or rename files and directories.",
+    "examples": [
+      "mv old.txt new.txt",
+      "mv file.txt /tmp/"
+    ]
+  },
+  {
+    "name": "cat",
+    "description": "Concatenate and display file contents.",
+    "examples": [
+      "cat file.txt",
+      "cat file1.txt file2.txt > combined.txt"
+    ]
+  },
+  {
+    "name": "grep",
+    "description": "Search for patterns in files or input.",
+    "examples": [
+      "grep 'error' log.txt",
+      "grep -r 'TODO' ./src",
+      "grep -i 'warning' *.log"
+    ]
+  },
+  {
+    "name": "find",
+    "description": "Search for files and directories in a directory hierarchy.",
+    "examples": [
+      "find . -name '*.txt'",
+      "find /var -type f -mtime -7",
+      "find . -name '*.log' -delete"
+    ]
+  },
+  {
+    "name": "chmod",
+    "description": "Change file or directory permissions.",
+    "examples": [
+      "chmod 755 script.sh",
+      "chmod +x deploy.sh",
+      "chmod -R 644 /var/www"
+    ]
+  },
+  {
+    "name": "chown",
+    "description": "Change file owner and group.",
+    "examples": [
+      "chown user:group file.txt",
+      "chown -R www-data /var/www"
+    ]
+  },
+  {
+    "name": "echo",
+    "description": "Display a line of text or write to a file.",
+    "examples": [
+      "echo 'Hello, World!'",
+      "echo $HOME",
+      "echo 'export PATH=$PATH:/usr/local/bin' >> ~/.bashrc"
+    ]
+  },
+  {
+    "name": "man",
+    "description": "Display the manual page for a command.",
+    "examples": [
+      "man ls",
+      "man grep"
+    ]
+  },
+  {
+    "name": "ssh",
+    "description": "Open a secure shell connection to a remote host.",
+    "examples": [
+      "ssh user@host",
+      "ssh -p 2222 user@host",
+      "ssh -i ~/.ssh/id_rsa user@host"
+    ]
+  },
+  {
+    "name": "scp",
+    "description": "Securely copy files between hosts over SSH.",
+    "examples": [
+      "scp file.txt user@host:/remote/path/",
+      "scp user@host:/remote/file.txt ./local/"
+    ]
+  },
+  {
+    "name": "curl",
+    "description": "Transfer data from or to a server using various protocols.",
+    "examples": [
+      "curl https://example.com",
+      "curl -O https://example.com/file.zip",
+      "curl -X POST -d '{\"key\":\"val\"}' -H 'Content-Type: application/json' https://api.example.com/data"
+    ]
+  },
+  {
+    "name": "wget",
+    "description": "Download files from the web.",
+    "examples": [
+      "wget https://example.com/file.zip",
+      "wget -q -O output.html https://example.com"
+    ]
+  },
+  {
+    "name": "tar",
+    "description": "Archive and compress files.",
+    "examples": [
+      "tar -czf archive.tar.gz folder/",
+      "tar -xzf archive.tar.gz",
+      "tar -tf archive.tar.gz"
+    ]
+  },
+  {
+    "name": "zip",
+    "description": "Package and compress files into a zip archive.",
+    "examples": [
+      "zip archive.zip file1.txt file2.txt",
+      "zip -r archive.zip folder/"
+    ]
+  },
+  {
+    "name": "unzip",
+    "description": "Extract files from a zip archive.",
+    "examples": [
+      "unzip archive.zip",
+      "unzip archive.zip -d /tmp/extracted"
+    ]
+  },
+  {
+    "name": "ps",
+    "description": "Display information about running processes.",
+    "examples": [
+      "ps aux",
+      "ps -ef | grep nginx"
+    ]
+  },
+  {
+    "name": "kill",
+    "description": "Send a signal to a process, typically to terminate it.",
+    "examples": [
+      "kill 1234",
+      "kill -9 1234"
+    ]
+  },
+  {
+    "name": "top",
+    "description": "Display real-time system resource usage and running processes.",
+    "examples": [
+      "top",
+      "top -u www-data"
+    ]
+  },
+  {
+    "name": "htop",
+    "description": "Interactive process viewer (enhanced version of top).",
+    "examples": [
+      "htop"
+    ]
+  },
+  {
+    "name": "df",
+    "description": "Report disk space usage of file systems.",
+    "examples": [
+      "df -h",
+      "df -h /dev/sda1"
+    ]
+  },
+  {
+    "name": "du",
+    "description": "Estimate file and directory disk usage.",
+    "examples": [
+      "du -sh *",
+      "du -sh /var/log"
+    ]
+  },
+  {
+    "name": "ping",
+    "description": "Check network connectivity to a host.",
+    "examples": [
+      "ping google.com",
+      "ping -c 4 192.168.1.1"
+    ]
+  },
+  {
+    "name": "ifconfig",
+    "description": "Configure or display network interface parameters.",
+    "examples": [
+      "ifconfig",
+      "ifconfig eth0"
+    ]
+  },
+  {
+    "name": "ip",
+    "description": "Show and manipulate routing, network devices, and tunnels.",
+    "examples": [
+      "ip addr show",
+      "ip route",
+      "ip link set eth0 up"
+    ]
+  },
+  {
+    "name": "netstat",
+    "description": "Print network connections, routing tables, and interface statistics.",
+    "examples": [
+      "netstat -tuln",
+      "netstat -an | grep LISTEN"
+    ]
+  },
+  {
+    "name": "history",
+    "description": "Display or manage the command history list.",
+    "examples": [
+      "history",
+      "history | grep git",
+      "history -c"
+    ]
+  },
+  {
+    "name": "alias",
+    "description": "Create a shortcut for a command.",
+    "examples": [
+      "alias ll='ls -la'",
+      "alias gs='git status'"
+    ]
+  },
+  {
+    "name": "env",
+    "description": "Display, set, or remove environment variables.",
+    "examples": [
+      "env",
+      "env | grep PATH"
+    ]
+  },
+  {
+    "name": "export",
+    "description": "Set environment variables for child processes.",
+    "examples": [
+      "export PATH=$PATH:/usr/local/bin",
+      "export EDITOR=vim"
+    ]
+  },
+  {
+    "name": "source",
+    "description": "Execute commands from a file in the current shell.",
+    "examples": [
+      "source ~/.bashrc",
+      "source .env"
+    ]
+  },
+  {
+    "name": "which",
+    "description": "Show the full path of a shell command.",
+    "examples": [
+      "which python3",
+      "which git"
+    ]
+  },
+  {
+    "name": "whereis",
+    "description": "Locate the binary, source, and manual page files for a command.",
+    "examples": [
+      "whereis bash",
+      "whereis python3"
+    ]
+  },
+  {
+    "name": "wc",
+    "description": "Count lines, words, and characters in files.",
+    "examples": [
+      "wc -l file.txt",
+      "wc -w file.txt",
+      "cat file.txt | wc -l"
+    ]
+  },
+  {
+    "name": "head",
+    "description": "Output the first lines of a file.",
+    "examples": [
+      "head file.txt",
+      "head -n 20 file.txt"
+    ]
+  },
+  {
+    "name": "tail",
+    "description": "Output the last lines of a file.",
+    "examples": [
+      "tail file.txt",
+      "tail -n 50 access.log",
+      "tail -f /var/log/syslog"
+    ]
+  },
+  {
+    "name": "sort",
+    "description": "Sort lines of text.",
+    "examples": [
+      "sort file.txt",
+      "sort -r file.txt",
+      "sort -n -k2 data.csv"
+    ]
+  },
+  {
+    "name": "uniq",
+    "description": "Report or filter out repeated lines.",
+    "examples": [
+      "sort file.txt | uniq",
+      "sort file.txt | uniq -c"
+    ]
+  },
+  {
+    "name": "sed",
+    "description": "Stream editor for filtering and transforming text.",
+    "examples": [
+      "sed 's/foo/bar/g' file.txt",
+      "sed -i 's/old/new/g' file.txt",
+      "sed -n '5,10p' file.txt"
+    ]
+  },
+  {
+    "name": "awk",
+    "description": "Pattern scanning and text processing language.",
+    "examples": [
+      "awk '{print $1}' file.txt",
+      "awk -F: '{print $1}' /etc/passwd",
+      "awk 'NR==5' file.txt"
+    ]
+  },
+  {
+    "name": "diff",
+    "description": "Compare files line by line.",
+    "examples": [
+      "diff file1.txt file2.txt",
+      "diff -u file1.txt file2.txt"
+    ]
+  },
+  {
+    "name": "ln",
+    "description": "Create hard or symbolic links.",
+    "examples": [
+      "ln -s /path/to/file link_name",
+      "ln file.txt hardlink.txt"
+    ]
+  },
+  {
+    "name": "touch",
+    "description": "Create an empty file or update file timestamps.",
+    "examples": [
+      "touch newfile.txt",
+      "touch -d '2024-01-01' file.txt"
+    ]
+  },
+  {
+    "name": "crontab",
+    "description": "Schedule commands to run automatically at specified times.",
+    "examples": [
+      "crontab -l",
+      "crontab -e"
+    ]
+  },
+  {
+    "name": "sudo",
+    "description": "Execute a command as another user (typically root).",
+    "examples": [
+      "sudo apt update",
+      "sudo -u www-data ls /var/www"
+    ]
+  },
+  {
+    "name": "apt",
+    "description": "Package management utility for Debian-based systems.",
+    "examples": [
+      "sudo apt update && sudo apt upgrade",
+      "sudo apt install curl",
+      "sudo apt remove vim"
+    ]
+  },
+  {
+    "name": "git",
+    "description": "Distributed version control system.",
+    "examples": [
+      "git clone https://github.com/user/repo.git",
+      "git add . && git commit -m 'message'",
+      "git push origin main",
+      "git pull"
+    ]
+  }
+]
