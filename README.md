@@ -1,5 +1,7 @@
 # dev.notes commands
 
+![dev.notes banner](docs/banner.svg)
+
 ![Static Site](https://img.shields.io/badge/type-static%20site-0f172a)
 ![Languages](https://img.shields.io/badge/languages-EN%20%7C%20DE%20%7C%20RU-1d4ed8)
 ![License: MIT](https://img.shields.io/badge/license-MIT-16a34a)
