@@ -1,0 +1,964 @@
+[
+  {
+    "id": 1,
+    "cat": "ffmpeg",
+    "name": "video → frames (jpg)",
+    "cmd": "ffmpeg -i /path/to/video.mp4 -vf fps=24 /folder/frame%04d.jpg",
+    "desc": "Splits video into individual frames at a given frame rate. Useful for ML and video analysis.",
+    "params": [
+      ["-i", "input file"],
+      ["-vf fps=24", "frame rate (24 fps)"],
+      ["%04d", "file numbering: frame0001.jpg, frame0002.jpg..."]
+    ]
+  },
+  {
+    "id": 2,
+    "cat": "ffmpeg",
+    "name": "convert to mp4 (H.264)",
+    "cmd": "ffmpeg -i input.mov -c:v libx264 -crf 23 -preset medium output.mp4",
+    "desc": "Converts any video file to mp4 with H.264 codec. Optimal quality/size balance.",
+    "params": [
+      ["-c:v libx264", "H.264 video codec"],
+      ["-crf 23", "quality: 18=better, 28=smaller file (range 18–28)"],
+      ["-preset medium", "encoding speed: ultrafast / fast / medium / slow"]
+    ]
+  },
+  {
+    "id": 3,
+    "cat": "ffmpeg",
+    "name": "trim video by time",
+    "cmd": "ffmpeg -i input.mp4 -ss 00:00:05 -to 00:00:30 -c copy output.mp4",
+    "desc": "Cuts a video segment without re-encoding — works instantly.",
+    "params": [
+      ["-ss", "start of segment (hh:mm:ss)"],
+      ["-to", "end of segment"],
+      ["-t", "alternative: duration instead of end time"],
+      ["-c copy", "copy streams without re-encoding (fast)"]
+    ]
+  },
+  {
+    "id": 4,
+    "cat": "ffmpeg",
+    "name": "video → gif",
+    "cmd": "ffmpeg -i input.mp4 -vf \"fps=15,scale=720:-1:flags=lanczos\" -loop 0 output.gif",
+    "desc": "Converts video to optimized GIF. Lanczos is the best scaling algorithm.",
+    "params": [
+      ["fps=15", "frames per second (lower = smaller file)"],
+      ["scale=720:-1", "width 720px, height automatic"],
+      ["-loop 0", "infinite loop (1 = no loop)"]
+    ]
+  },
+  {
+    "id": 5,
+    "cat": "ffmpeg",
+    "name": "extract audio from video",
+    "cmd": "ffmpeg -i input.mp4 -vn -acodec copy output.aac",
+    "desc": "Extracts audio track without re-encoding.",
+    "params": [
+      ["-vn", "disable video"],
+      ["-acodec copy", "copy audio as is (lossless)"],
+      ["-acodec mp3", "alternative: re-encode to mp3"]
+    ]
+  },
+  {
+    "id": 6,
+    "cat": "python",
+    "name": "local HTTP server",
+    "cmd": "cd /path/to/project\npython3 -m http.server 8080",
+    "desc": "Starts a simple static server from the current folder. Open in browser: http://localhost:8080",
+    "params": [
+      ["8080", "port (any free port: 3000, 5000, 8000)"],
+      ["-m http.server", "built-in module, no installation required"]
+    ]
+  },
+  {
+    "id": 7,
+    "cat": "python",
+    "name": "virtual environment",
+    "cmd": "python3 -m venv venv\nsource venv/bin/activate\npip install -r requirements.txt",
+    "desc": "Creates an isolated Python environment for the project. Required before installing packages.",
+    "params": [
+      ["python3 -m venv venv", "create venv folder with environment"],
+      ["source venv/bin/activate", "activate (prompt will show (venv))"],
+      ["deactivate", "exit the environment"]
+    ]
+  },
+  {
+    "id": 8,
+    "cat": "git",
+    "name": "basic push",
+    "cmd": "git add .\ngit commit -m \"feat: description of changes\"\ngit push origin main",
+    "desc": "Standard cycle of saving and publishing changes to GitHub.",
+    "params": [
+      ["git add .", "add all changed files to staging"],
+      ["-m \"...\"", "commit message"],
+      ["origin main", "remote repository and branch"]
+    ]
+  },
+  {
+    "id": 9,
+    "cat": "git",
+    "name": "undo last commit",
+    "cmd": "git reset --soft HEAD~1",
+    "desc": "Undoes the last commit, but keeps changes in the working directory.",
+    "params": [
+      ["--soft", "keep changes staged (ready to commit)"],
+      ["--hard", "DELETE changes completely (caution!)"],
+      ["HEAD~1", "one commit back (HEAD~2 — two back)"]
+    ]
+  },
+  {
+    "id": 10,
+    "cat": "git",
+    "name": "view commit history",
+    "cmd": "git log --oneline --graph --all",
+    "desc": "Beautiful compact log of all branches in the terminal.",
+    "params": [
+      ["--oneline", "one line per commit"],
+      ["--graph", "branch tree in ASCII"],
+      ["--all", "show all branches including remote"]
+    ]
+  },
+  {
+    "id": 11,
+    "cat": "nginx",
+    "name": "check config and reload",
+    "cmd": "sudo nginx -t && sudo systemctl reload nginx",
+    "desc": "First checks config syntax, and only if successful — reloads nginx without downtime.",
+    "params": [
+      ["nginx -t", "syntax check (test)"],
+      ["&&", "execute next only if previous succeeded"],
+      ["reload", "graceful reload without downtime"]
+    ]
+  },
+  {
+    "id": 12,
+    "cat": "nginx",
+    "name": "view logs in real time",
+    "cmd": "sudo tail -f /var/log/nginx/error.log\nsudo tail -f /var/log/nginx/access.log",
+    "desc": "Live viewing of nginx logs. Ctrl+C to stop.",
+    "params": [
+      ["-f", "follow — updates in real time"],
+      ["error.log", "server errors"],
+      ["access.log", "all incoming requests"]
+    ]
+  },
+  {
+    "id": 13,
+    "cat": "node",
+    "name": "pm2: start / list / logs",
+    "cmd": "pm2 start ecosystem.config.js\npm2 list\npm2 logs app-name\npm2 restart app-name",
+    "desc": "Basic pm2 commands for managing Node.js processes on the server.",
+    "params": [
+      ["start ecosystem.config.js", "start with config and env variables"],
+      ["pm2 list", "list of all processes and their status"],
+      ["pm2 logs", "live logs (Ctrl+C to exit)"],
+      ["pm2 restart", "restart without stopping"]
+    ]
+  },
+  {
+    "id": 14,
+    "cat": "node",
+    "name": "npm: install / update",
+    "cmd": "npm install\nnpm install package-name\nnpm update\nnpm audit fix",
+    "desc": "Basic commands for managing dependencies.",
+    "params": [
+      ["npm install", "install all dependencies from package.json"],
+      ["npm install pkg", "add a new package"],
+      ["npm update", "update all packages to latest compatible versions"],
+      ["npm audit fix", "automatically fix vulnerabilities"]
+    ]
+  },
+  {
+    "id": 15,
+    "cat": "server",
+    "name": "view free memory",
+    "cmd": "free -h && echo \"---\" && cat /proc/swaps",
+    "desc": "Shows RAM and swap. Useful for diagnosing OOM Killer problems.",
+    "params": [
+      ["free -h", "memory in human-readable format (MB/GB)"],
+      ["/proc/swaps", "active swap files and partitions"]
+    ]
+  },
+  {
+    "id": 16,
+    "cat": "server",
+    "name": "create 2GB swap file",
+    "cmd": "sudo fallocate -l 2G /swapfile\nsudo chmod 600 /swapfile\nsudo mkswap /swapfile\nsudo swapon /swapfile",
+    "desc": "Creates and activates 2GB swap. Solves OOM Killer problem on VPS with low RAM.",
+    "params": [
+      ["fallocate -l 2G", "allocate 2 gigabytes (or 1G, 4G)"],
+      ["chmod 600", "root-only access — mandatory for swap"],
+      ["mkswap", "format as swap space"],
+      ["swapon", "activate swap immediately"]
+    ]
+  },
+  {
+    "id": 17,
+    "cat": "server",
+    "name": "check open ports",
+    "cmd": "sudo ss -tlnp\nsudo ufw status",
+    "desc": "Shows which ports are listening and firewall status.",
+    "params": [
+      ["-t", "TCP only"],
+      ["-l", "listening sockets only"],
+      ["-n", "numeric addresses (no DNS)"],
+      ["-p", "show process on each port"]
+    ]
+  },
+  {
+    "id": 18,
+    "cat": "linux",
+    "name": "show folder sizes",
+    "cmd": "du -h --max-depth=1",
+    "desc": "Shows how much space folders take in the current directory.",
+    "params": [
+      ["-h", "human-readable format (KB, MB, GB)"],
+      ["--max-depth=1", "only current level of folders"],
+      ["du -sh *", "quick list of file and folder sizes"]
+    ]
+  },
+  {
+    "id": 19,
+    "cat": "linux",
+    "name": "find a file",
+    "cmd": "find /path -name \"*.log\"",
+    "desc": "Searches for files by name.",
+    "params": [
+      ["-name", "search by name"],
+      ["-iname", "case-insensitive search"],
+      ["*.log", "file pattern"]
+    ]
+  },
+  {
+    "id": 20,
+    "cat": "linux",
+    "name": "search text in files",
+    "cmd": "grep -r \"error\" /var/log",
+    "desc": "Searches for text inside files recursively.",
+    "params": [
+      ["-r", "recursive search"],
+      ["-i", "ignore case"],
+      ["-n", "show line number"]
+    ]
+  },
+  {
+    "id": 21,
+    "cat": "network",
+    "name": "check connection (ping)",
+    "cmd": "ping -c 4 google.com",
+    "desc": "Checks server availability.",
+    "params": [
+      ["-c 4", "send 4 packets"],
+      ["google.com", "server address"]
+    ]
+  },
+  {
+    "id": 22,
+    "cat": "network",
+    "name": "check HTTP request",
+    "cmd": "curl -I https://example.com",
+    "desc": "Gets only HTTP response headers.",
+    "params": [
+      ["-I", "headers only"],
+      ["-L", "follow redirects"],
+      ["-o file", "save output to file"]
+    ]
+  },
+  {
+    "id": 23,
+    "cat": "archive",
+    "name": "create tar.gz archive",
+    "cmd": "tar -czvf archive.tar.gz folder/",
+    "desc": "Creates a compressed archive.",
+    "params": [
+      ["-c", "create archive"],
+      ["-z", "gzip compression"],
+      ["-v", "show progress"],
+      ["-f", "archive name"]
+    ]
+  },
+  {
+    "id": 24,
+    "cat": "archive",
+    "name": "extract tar.gz",
+    "cmd": "tar -xzvf archive.tar.gz",
+    "desc": "Extracts tar.gz archive.",
+    "params": [
+      ["-x", "extract files"],
+      ["-z", "gzip"],
+      ["-v", "show files"],
+      ["-f", "archive"]
+    ]
+  },
+  {
+    "id": 25,
+    "cat": "ssh",
+    "name": "connect to server",
+    "cmd": "ssh user@server-ip",
+    "desc": "SSH connection to remote server.",
+    "params": [
+      ["user", "username"],
+      ["server-ip", "server address"],
+      ["-p 22", "specify non-standard port"]
+    ]
+  },
+  {
+    "id": 26,
+    "cat": "ssh",
+    "name": "copy file to server",
+    "cmd": "scp file.txt user@server:/home/user/",
+    "desc": "Transfers file to server via SSH.",
+    "params": [
+      ["scp", "secure copy"],
+      ["file.txt", "local file"],
+      ["user@server", "server"],
+      ["/home/user/", "destination folder"]
+    ]
+  },
+  {
+    "id": 27,
+    "cat": "docker",
+    "name": "list containers",
+    "cmd": "docker ps -a",
+    "desc": "Shows all docker containers.",
+    "params": [
+      ["ps", "list containers"],
+      ["-a", "including stopped"]
+    ]
+  },
+  {
+    "id": 28,
+    "cat": "docker",
+    "name": "run container",
+    "cmd": "docker run -d -p 8080:80 nginx",
+    "desc": "Runs nginx container.",
+    "params": [
+      ["-d", "run in background"],
+      ["-p 8080:80", "port forwarding"],
+      ["nginx", "image"]
+    ]
+  },
+  {
+    "id": 29,
+    "cat": "git",
+    "name": "create new branch",
+    "cmd": "git checkout -b feature-name",
+    "desc": "Creates a new branch and switches to it.",
+    "params": [
+      ["checkout -b", "create branch"],
+      ["feature-name", "branch name"]
+    ]
+  },
+  {
+    "id": 30,
+    "cat": "git",
+    "name": "update repository",
+    "cmd": "git pull origin main",
+    "desc": "Downloads latest changes from remote repository.",
+    "params": [
+      ["pull", "download and merge changes"],
+      ["origin", "remote repository"],
+      ["main", "branch"]
+    ]
+  },
+  {
+    "id": 31,
+    "cat": "linux",
+    "name": "list files",
+    "cmd": "ls -lah",
+    "desc": "Shows all files including hidden with permissions and size.",
+    "params": [
+      ["-l", "detailed list"],
+      ["-a", "include hidden files"],
+      ["-h", "size in KB/MB/GB"]
+    ]
+  },
+  {
+    "id": 32,
+    "cat": "linux",
+    "name": "create folder",
+    "cmd": "mkdir -p project/src",
+    "desc": "Creates folder including parent directories.",
+    "params": [
+      ["mkdir", "create directory"],
+      ["-p", "create nested folders"]
+    ]
+  },
+  {
+    "id": 33,
+    "cat": "linux",
+    "name": "delete file",
+    "cmd": "rm file.txt",
+    "desc": "Deletes a file.",
+    "params": [
+      ["rm", "delete file"],
+      ["-r", "delete folder recursively"],
+      ["-f", "force without confirmation"]
+    ]
+  },
+  {
+    "id": 34,
+    "cat": "linux",
+    "name": "copy file",
+    "cmd": "cp file.txt backup/file.txt",
+    "desc": "Copies file to another folder.",
+    "params": [
+      ["cp", "copy"],
+      ["-r", "copy folders"]
+    ]
+  },
+  {
+    "id": 35,
+    "cat": "linux",
+    "name": "move file",
+    "cmd": "mv file.txt archive/file.txt",
+    "desc": "Moves or renames a file.",
+    "params": [
+      ["mv", "move"],
+      ["mv old new", "rename file"]
+    ]
+  },
+  {
+    "id": 36,
+    "cat": "process",
+    "name": "list processes",
+    "cmd": "ps aux",
+    "desc": "Shows all running processes.",
+    "params": [
+      ["ps", "process status"],
+      ["aux", "all users and processes"]
+    ]
+  },
+  {
+    "id": 37,
+    "cat": "process",
+    "name": "process monitoring",
+    "cmd": "top",
+    "desc": "Interactive monitor of processes and CPU load.",
+    "params": [
+      ["top", "live monitoring"],
+      ["htop", "improved version (if installed)"]
+    ]
+  },
+  {
+    "id": 38,
+    "cat": "process",
+    "name": "kill process",
+    "cmd": "kill -9 1234",
+    "desc": "Forcefully terminates a process.",
+    "params": [
+      ["kill", "terminate process"],
+      ["-9", "SIGKILL — forceful termination"],
+      ["1234", "process PID"]
+    ]
+  },
+  {
+    "id": 39,
+    "cat": "network",
+    "name": "show IP address",
+    "cmd": "ip a",
+    "desc": "Shows network interfaces and IP addresses.",
+    "params": [
+      ["ip", "network utility"],
+      ["a", "address"]
+    ]
+  },
+  {
+    "id": 40,
+    "cat": "network",
+    "name": "check DNS",
+    "cmd": "nslookup google.com",
+    "desc": "Shows DNS records of a domain.",
+    "params": [
+      ["nslookup", "DNS query"],
+      ["google.com", "domain"]
+    ]
+  },
+  {
+    "id": 41,
+    "cat": "network",
+    "name": "route to server",
+    "cmd": "traceroute google.com",
+    "desc": "Shows packet path to server.",
+    "params": [
+      ["traceroute", "check route"],
+      ["google.com", "address"]
+    ]
+  },
+  {
+    "id": 42,
+    "cat": "system",
+    "name": "show system information",
+    "cmd": "uname -a",
+    "desc": "Outputs kernel and system information.",
+    "params": [
+      ["uname", "system name"],
+      ["-a", "full information"]
+    ]
+  },
+  {
+    "id": 43,
+    "cat": "system",
+    "name": "disk usage",
+    "cmd": "df -h",
+    "desc": "Shows disk space usage.",
+    "params": [
+      ["df", "disk free"],
+      ["-h", "human readable"]
+    ]
+  },
+  {
+    "id": 44,
+    "cat": "docker",
+    "name": "download image",
+    "cmd": "docker pull nginx",
+    "desc": "Downloads docker image from registry.",
+    "params": [
+      ["pull", "download image"],
+      ["nginx", "image name"]
+    ]
+  },
+  {
+    "id": 45,
+    "cat": "docker",
+    "name": "stop container",
+    "cmd": "docker stop container_id",
+    "desc": "Stops a docker container.",
+    "params": [
+      ["stop", "stop container"],
+      ["container_id", "identifier"]
+    ]
+  },
+  {
+    "id": 46,
+    "cat": "docker",
+    "name": "remove container",
+    "cmd": "docker rm container_id",
+    "desc": "Removes a container.",
+    "params": [
+      ["rm", "remove"],
+      ["container_id", "container id"]
+    ]
+  },
+  {
+    "id": 47,
+    "cat": "python",
+    "name": "install package",
+    "cmd": "pip install requests",
+    "desc": "Installs a Python library.",
+    "params": [
+      ["pip install", "install package"],
+      ["requests", "library name"]
+    ]
+  },
+  {
+    "id": 48,
+    "cat": "python",
+    "name": "list packages",
+    "cmd": "pip list",
+    "desc": "Shows installed Python packages.",
+    "params": [
+      ["pip", "package manager"],
+      ["list", "list packages"]
+    ]
+  },
+  {
+    "id": 49,
+    "cat": "python",
+    "name": "freeze dependencies",
+    "cmd": "pip freeze > requirements.txt",
+    "desc": "Saves project dependency list.",
+    "params": [
+      ["freeze", "export dependencies"],
+      [">", "output redirection"]
+    ]
+  },
+  {
+    "id": 50,
+    "cat": "ffmpeg",
+    "name": "resize video",
+    "cmd": "ffmpeg -i input.mp4 -vf scale=1280:720 output.mp4",
+    "desc": "Changes video resolution.",
+    "params": [
+      ["-vf scale", "video filter scale"],
+      ["1280:720", "resolution"]
+    ]
+  },
+  {
+    "id": 51,
+    "cat": "ffmpeg",
+    "name": "extract one frame",
+    "cmd": "ffmpeg -i video.mp4 -ss 00:00:05 -vframes 1 frame.jpg",
+    "desc": "Saves a frame from video.",
+    "params": [
+      ["-ss", "frame time"],
+      ["-vframes 1", "one frame"]
+    ]
+  },
+  {
+    "id": 52,
+    "cat": "system",
+    "name": "reboot system",
+    "cmd": "sudo reboot",
+    "desc": "Reboots the system.",
+    "params": [
+      ["sudo", "administrator rights"],
+      ["reboot", "reboot"]
+    ]
+  },
+  {
+    "id": 53,
+    "cat": "system",
+    "name": "shutdown system",
+    "cmd": "sudo shutdown now",
+    "desc": "Immediately shuts down the system.",
+    "params": [
+      ["shutdown", "shutdown"],
+      ["now", "now"]
+    ]
+  },
+  {
+    "id": 54,
+    "cat": "search",
+    "name": "quick file search",
+    "cmd": "locate filename",
+    "desc": "Very fast file search using database.",
+    "params": [
+      ["locate", "search"],
+      ["updatedb", "update search database"]
+    ]
+  },
+  {
+    "id": 55,
+    "cat": "search",
+    "name": "search command",
+    "cmd": "apropos keyword",
+    "desc": "Searches for commands by keyword.",
+    "params": [
+      ["apropos", "search man pages"],
+      ["keyword", "keyword"]
+    ]
+  },
+  {
+    "id": 56,
+    "cat": "linux",
+    "name": "show command history",
+    "cmd": "history",
+    "desc": "Outputs list of previously executed commands.",
+    "params": [
+      ["history", "terminal history"],
+      ["!123", "execute command from history"]
+    ]
+  },
+  {
+    "id": 57,
+    "cat": "linux",
+    "name": "clear terminal",
+    "cmd": "clear",
+    "desc": "Clears terminal screen.",
+    "params": [
+      ["clear", "screen clear"]
+    ]
+  },
+  {
+    "id": 58,
+    "cat": "system",
+    "name": "show uptime",
+    "cmd": "uptime",
+    "desc": "Shows how long the system has been running.",
+    "params": [
+      ["uptime", "system uptime"]
+    ]
+  },
+  {
+    "id": 59,
+    "cat": "system",
+    "name": "show users",
+    "cmd": "who",
+    "desc": "Shows who is currently in the system.",
+    "params": [
+      ["who", "active users"]
+    ]
+  },
+  {
+    "id": 60,
+    "cat": "system",
+    "name": "current user",
+    "cmd": "whoami",
+    "desc": "Shows current user.",
+    "params": [
+      ["whoami", "username"]
+    ]
+  },
+  {
+    "id": 61,
+    "cat": "linux",
+    "name": "show free space",
+    "cmd": "df -h",
+    "desc": "Shows disk space usage.",
+    "params": [
+      ["df", "disk free"],
+      ["-h", "human readable"]
+    ]
+  },
+  {
+    "id": 62,
+    "cat": "linux",
+    "name": "show memory usage",
+    "cmd": "free -h",
+    "desc": "Shows RAM usage.",
+    "params": [
+      ["free", "memory"],
+      ["-h", "human readable"]
+    ]
+  },
+  {
+    "id": 63,
+    "cat": "linux",
+    "name": "show processes",
+    "cmd": "ps aux",
+    "desc": "List of all processes.",
+    "params": [
+      ["ps", "process status"],
+      ["aux", "all users, processes"]
+    ]
+  },
+  {
+    "id": 64,
+    "cat": "linux",
+    "name": "kill process",
+    "cmd": "kill -9 1234",
+    "desc": "Forcefully terminate process.",
+    "params": [
+      ["kill", "terminate"],
+      ["-9", "force kill"]
+    ]
+  },
+  {
+    "id": 65,
+    "cat": "network",
+    "name": "check port",
+    "cmd": "nc -zv google.com 80",
+    "desc": "Checks port availability.",
+    "params": [
+      ["nc", "netcat"],
+      ["-z", "scan mode"]
+    ]
+  },
+  {
+    "id": 66,
+    "cat": "network",
+    "name": "download file",
+    "cmd": "wget https://example.com/file.zip",
+    "desc": "Downloads file from internet.",
+    "params": [
+      ["wget", "download"],
+      ["-O file.zip", "save as"]
+    ]
+  },
+  {
+    "id": 67,
+    "cat": "git",
+    "name": "undo changes",
+    "cmd": "git checkout -- file.txt",
+    "desc": "Undoes changes in a file.",
+    "params": [
+      ["checkout --", "undo changes"]
+    ]
+  },
+  {
+    "id": 68,
+    "cat": "git",
+    "name": "delete branch",
+    "cmd": "git branch -d feature-name",
+    "desc": "Deletes a local branch.",
+    "params": [
+      ["branch -d", "delete branch"]
+    ]
+  },
+  {
+    "id": 69,
+    "cat": "docker",
+    "name": "show container logs",
+    "cmd": "docker logs container_name",
+    "desc": "Shows container logs.",
+    "params": [
+      ["logs", "logs"],
+      ["-f", "follow"]
+    ]
+  },
+  {
+    "id": 70,
+    "cat": "docker",
+    "name": "remove all containers",
+    "cmd": "docker rm -f $(docker ps -aq)",
+    "desc": "Removes all containers.",
+    "params": [
+      ["rm -f", "force remove"],
+      ["ps -aq", "all containers"]
+    ]
+  },
+  {
+    "id": 71,
+    "cat": "ssh",
+    "name": "copy folder",
+    "cmd": "scp -r folder user@server:/home/user/",
+    "desc": "Copies folder to server.",
+    "params": [
+      ["scp -r", "recursive copy"]
+    ]
+  },
+  {
+    "id": 72,
+    "cat": "ssh",
+    "name": "delete file on server",
+    "cmd": "ssh user@server 'rm /path/to/file'",
+    "desc": "Deletes file on remote server.",
+    "params": [
+      ["ssh user@server", "connect"],
+      ["'...'", "command on server"]
+    ]
+  },
+  {
+    "id": 73,
+    "cat": "python",
+    "name": "run script",
+    "cmd": "python3 script.py",
+    "desc": "Runs Python script.",
+    "params": [
+      ["python3", "interpreter"],
+      ["script.py", "file"]
+    ]
+  },
+  {
+    "id": 74,
+    "cat": "python",
+    "name": "install dependencies",
+    "cmd": "pip install -r requirements.txt",
+    "desc": "Installs dependencies from file.",
+    "params": [
+      ["pip install", "install"],
+      ["-r", "requirements file"]
+    ]
+  },
+  {
+    "id": 75,
+    "cat": "nginx",
+    "name": "restart nginx",
+    "cmd": "sudo systemctl restart nginx",
+    "desc": "Restarts nginx.",
+    "params": [
+      ["systemctl", "service management"],
+      ["restart", "restart"]
+    ]
+  },
+  {
+    "id": 76,
+    "cat": "nginx",
+    "name": "check config",
+    "cmd": "sudo nginx -t",
+    "desc": "Checks nginx config syntax.",
+    "params": [
+      ["nginx -t", "test config"]
+    ]
+  },
+  {
+    "id": 77,
+    "cat": "node",
+    "name": "run application",
+    "cmd": "node app.js",
+    "desc": "Runs Node.js application.",
+    "params": [
+      ["node", "runtime"],
+      ["app.js", "entry point"]
+    ]
+  },
+  {
+    "id": 78,
+    "cat": "node",
+    "name": "install dev dependencies",
+    "cmd": "npm install --save-dev nodemon",
+    "desc": "Installs package as dev dependency.",
+    "params": [
+      ["--save-dev", "dev dependency"]
+    ]
+  },
+  {
+    "id": 79,
+    "cat": "system",
+    "name": "show disks",
+    "cmd": "lsblk",
+    "desc": "Shows block devices (disks).",
+    "params": [
+      ["lsblk", "list block devices"]
+    ]
+  },
+  {
+    "id": 80,
+    "cat": "system",
+    "name": "show processes by memory",
+    "cmd": "ps aux --sort=-%mem",
+    "desc": "Sorts processes by memory.",
+    "params": [
+      ["--sort=-%mem", "sort by memory"]
+    ]
+  },
+  {
+    "id": 81,
+    "cat": "system",
+    "name": "show processes by CPU",
+    "cmd": "ps aux --sort=-%cpu",
+    "desc": "Sorts processes by CPU.",
+    "params": [
+      ["--sort=-%cpu", "sort by CPU"]
+    ]
+  },
+  {
+    "id": 82,
+    "cat": "linux",
+    "name": "create file",
+    "cmd": "touch file.txt",
+    "desc": "Creates an empty file.",
+    "params": [
+      ["touch", "create file"],
+      ["file.txt", "filename"]
+    ]
+  },
+  {
+    "id": 83,
+    "cat": "node",
+    "name": "live-server: open file",
+    "cmd": "live-server --open=index.html",
+    "desc": "Starts a dev server with live reload and opens index.html in the browser automatically. Install once: npm install -g live-server",
+    "params": [
+      ["--open=index.html", "open a specific file on start"],
+      ["--port=8080", "custom port (default: 8080)"],
+      ["--no-browser", "start server without opening the browser"]
+    ]
+  },
+  {
+    "id": 84,
+    "cat": "node",
+    "name": "live-server: custom port",
+    "cmd": "live-server --port=3000 --host=localhost --open=index.html",
+    "desc": "Starts live-server on port 3000. Useful when 8080 is busy. Changes in HTML/CSS/JS trigger an instant page reload.",
+    "params": [
+      ["--port=3000", "listen on port 3000"],
+      ["--host=localhost", "bind to localhost only"],
+      ["--watch=src/", "watch only a specific folder"]
+    ]
+  },
+  {
+    "id": 85,
+    "cat": "node",
+    "name": "npx serve: static server",
+    "cmd": "npx serve . -p 3000",
+    "desc": "Serves a folder as a static site without any global install. Quick alternative to live-server — no live reload.",
+    "params": [
+      ["npx serve", "run without installing globally"],
+      [".", "serve current folder"],
+      ["-p 3000", "port (default: 5000)"]
+    ]
+  }
+]
