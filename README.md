@@ -164,3 +164,25 @@ python3 -m http.server 8080
 ## License
 
 MIT. See `LICENSE`.
+
+## iPhone App (SwiftUI)
+
+В репозитории также добавлена iOS-версия приложения.
+
+### Структура iOS части
+
+- App/DevNotes.xcodeproj — Xcode проект
+- App/DevNotes — исходный код SwiftUI и JSON данные
+
+### Возможности iOS
+
+- Переключение языков: RU / EN / DE
+- Поиск и фильтрация команд
+- Копирование команды в буфер
+- Локальное добавление и удаление пользовательских команд (UserDefaults)
+
+### Запуск iOS
+
+1. Откройте App/DevNotes.xcodeproj в Xcode.
+2. Выберите симулятор iPhone или устройство.
+3. Нажмите Run (Cmd+R).
