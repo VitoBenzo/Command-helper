@@ -43,6 +43,19 @@ Lightweight static web app with searchable command snippets for daily developer/
 - Add personal commands in browser local storage
 - Delete custom local commands
 
+### iPhone App (SwiftUI)
+
+This repository also includes a native iPhone/iPad app.
+
+- Path: `App/DevNotes.xcodeproj`
+- Features: language switch (RU/EN/DE), search, category filters, copy command, local custom commands via UserDefaults
+
+Run in Xcode:
+
+1. Open `App/DevNotes.xcodeproj`
+2. Select an iPhone simulator or device
+3. Press Run (Cmd+R)
+
 ### Project Structure
 
 - `index.html` - UI, styles, and app logic
@@ -96,6 +109,19 @@ Leichte statische Web-App mit durchsuchbaren Befehls-Snippets fur typische Entwi
 - Eigene Befehle im Browser (localStorage) speichern
 - Lokale benutzerdefinierte Befehle loschen
 
+### iPhone-App (SwiftUI)
+
+Dieses Repository enthalt auch eine native iPhone/iPad-App.
+
+- Pfad: `App/DevNotes.xcodeproj`
+- Funktionen: Sprachwechsel (RU/EN/DE), Suche, Kategorie-Filter, Kopieren von Befehlen, lokale benutzerdefinierte Befehle via UserDefaults
+
+Start in Xcode:
+
+1. `App/DevNotes.xcodeproj` offnen
+2. iPhone-Simulator oder Gerat auswahlen
+3. Run (Cmd+R) starten
+
 ### Projektstruktur
 
 - `index.html` - UI, Styles und App-Logik
@@ -136,6 +162,19 @@ Dann offnen: `http://localhost:8080`
 - Добавление своих команд в localStorage браузера
 - Удаление локальных пользовательских команд
 
+### Приложение для iPhone (SwiftUI)
+
+В репозитории также есть нативное приложение для iPhone/iPad.
+
+- Путь: `App/DevNotes.xcodeproj`
+- Возможности: переключение языков (RU/EN/DE), поиск, фильтры категорий, копирование команд, локальные пользовательские команды через UserDefaults
+
+Запуск в Xcode:
+
+1. Открой `App/DevNotes.xcodeproj`
+2. Выбери симулятор iPhone или устройство
+3. Нажми Run (Cmd+R)
+
 ### Структура проекта
 
 - `index.html` - интерфейс, стили и логика приложения
@@ -164,25 +203,3 @@ python3 -m http.server 8080
 ## License
 
 MIT. See `LICENSE`.
-
-## iPhone App (SwiftUI)
-
-В репозитории также добавлена iOS-версия приложения.
-
-### Структура iOS части
-
-- App/DevNotes.xcodeproj — Xcode проект
-- App/DevNotes — исходный код SwiftUI и JSON данные
-
-### Возможности iOS
-
-- Переключение языков: RU / EN / DE
-- Поиск и фильтрация команд
-- Копирование команды в буфер
-- Локальное добавление и удаление пользовательских команд (UserDefaults)
-
-### Запуск iOS
-
-1. Откройте App/DevNotes.xcodeproj в Xcode.
-2. Выберите симулятор iPhone или устройство.
-3. Нажмите Run (Cmd+R).
